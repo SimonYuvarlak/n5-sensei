@@ -1,0 +1,7 @@
+{
+  "name": "n5-sensei",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes serve -s . -l $PORT"
+  }
+}
