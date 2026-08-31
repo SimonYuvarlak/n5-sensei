@@ -26,10 +26,17 @@
   .bar { height:4px; background:var(--line); border-radius:99px; overflow:hidden; margin: .6rem 0 1rem; }
   .bar > span { display:block; height:100%; background:var(--accent); width:0; }
   .counts { color:var(--mute); font-size:.85rem; }
+  .nav { display:flex; gap:.45rem; margin-bottom:1rem; }
+  .nav a { border:1px solid var(--line); color:var(--ink); text-decoration:none; padding:.35rem .7rem; border-radius:999px; font-size:.8rem; }
+  .nav a.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="nav">
+    <a class="on" href="index.html">Kartlar</a>
+    <a href="notes.html">Notlar</a>
+  </div>
   <header>
     <div>
       <h1>N5 Sensei</h1>
