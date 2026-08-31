@@ -40,7 +40,7 @@
   .sheet-actions { display:flex; gap:.45rem; justify-content:flex-end; margin-top:.8rem; }
   .sheet-actions button { border:1px solid var(--line); background:var(--paper); padding:.45rem .8rem; border-radius:.55rem; font:inherit; cursor:pointer; }
   .sheet-actions .go { background:var(--ink); color:var(--paper); border-color:var(--ink); }
-  #pdf-root { position:fixed; left:-9999px; top:0; width:720px; background:#fffaf2; color:#1c1814; padding:28px 32px; font-family:"Iowan Old Style", Palatino, "Times New Roman", serif; }
+  #pdf-root { position:fixed; left:-9999px; top:0; width:794px; min-height:200px; background:#fffaf2; color:#1c1814; padding:28px 36px 40px; font-family:"Iowan Old Style", Palatino, "Times New Roman", serif; z-index:-1; box-sizing:border-box; overflow:visible; }
   #pdf-root h1 { font-size:22px; margin:0 0 4px; }
   #pdf-root .meta { color:#6e665c; font-size:12px; margin:0 0 18px; }
   #pdf-root h2 { font-size:16px; border-bottom:1px solid #ddd4c6; padding-bottom:6px; margin:22px 0 10px; }
@@ -1028,23 +1028,44 @@ document.getElementById("dl-go").onclick = () => {
   const root = document.getElementById("pdf-root");
   const inner = buildPdfHtml();
   if (inner.indexOf("<h2>") === -1) { alert("Bir şey seç."); return; }
-  root.innerHTML = inner;
   const name = "n5-sensei-" + new Date().toISOString().slice(0,10) + ".pdf";
-  const go = () => html2pdf().set({
-    margin: [12, 12, 14, 12],
-    filename: name,
-    image: { type: "jpeg", quality: 0.95 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: "#fffaf2" },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    pagebreak: { mode: ["css", "legacy"], avoid: [".pbox", "tr", "h2", "h3"] }
-  }).from(root).save().then(() => { modal.hidden = true; root.innerHTML = ""; });
-  if (window.html2pdf) go();
-  else {
+  const css = `#pdf-doc{font-family:Palatino,"Iowan Old Style","Times New Roman",serif;color:#1c1814;background:#fffaf2;padding:8px 4px 24px;}
+    #pdf-doc h1{font-size:22px;margin:0 0 4px;}
+    #pdf-doc .meta{color:#6e665c;font-size:12px;margin:0 0 18px;}
+    #pdf-doc h2{font-size:16px;border-bottom:1px solid #ddd4c6;padding-bottom:6px;margin:22px 0 10px;}
+    #pdf-doc h3{font-size:13px;color:#9c3b2e;margin:14px 0 6px;}
+    #pdf-doc .pbox{background:#f5e59a;padding:10px 12px;margin:0 0 10px;border-radius:4px;white-space:pre-wrap;}
+    #pdf-doc table{width:100%;border-collapse:collapse;font-size:12px;}
+    #pdf-doc td{border-bottom:1px solid #eee6d8;padding:4px 8px 4px 0;vertical-align:top;}
+    #pdf-doc td.jp{font-weight:600;width:38%;}
+    #pdf-doc ul{margin:4px 0 8px 18px;}
+    #pdf-doc .lesson{margin-bottom:16px;page-break-inside:avoid;}`;
+  function printWindow() {
     const w = window.open("", "_blank");
-    w.document.write(`<html><head><title>${name}</title><style>body{font-family:Palatino,serif;padding:24px;}</style></head><body>${inner}</body></html>`);
-    w.document.close(); w.focus(); w.print();
+    if (!w) { alert("Pop-up kapalı. PDF için izin ver."); return; }
+    w.document.open();
+    w.document.write(`<!DOCTYPE html><html><head><title>${name}</title><style>@page{size:A4;margin:16mm;}body{margin:0;background:#fffaf2;}${css}</style></head><body><div id="pdf-doc">${inner}</div></body></html>`);
+    w.document.close();
+    w.focus();
+    setTimeout(() => { w.print(); }, 250);
     modal.hidden = true;
   }
+  root.innerHTML = `<div id="pdf-doc">${inner}</div>`;
+  root.style.left = "0";
+  root.style.top = "0";
+  root.style.zIndex = "90";
+  modal.hidden = true;
+  const finish = () => { root.style.left = "-9999px"; root.style.zIndex = "-1"; root.innerHTML = ""; };
+  if (!window.html2pdf) { printWindow(); finish(); return; }
+  setTimeout(() => {
+    html2pdf().set({
+      margin: [10, 10, 12, 10],
+      filename: name,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#fffaf2", scrollX: 0, scrollY: 0, windowWidth: 794 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    }).from(root).save().then(finish).catch(() => { finish(); printWindow(); });
+  }, 80);
 };
 renderStickies();
 </script>
