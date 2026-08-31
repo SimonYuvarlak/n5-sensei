@@ -24,9 +24,31 @@
   .stickies .hint { color:var(--mute); font-size:.75rem; margin:0 0 .8rem; line-height:1.35; }
   .stick-tools { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:.8rem; }
   .stick-tools button, .stick-tools label { border:1px solid var(--line); background:var(--card); color:var(--ink); padding:.28rem .55rem; border-radius:999px; font:inherit; font-size:.72rem; cursor:pointer; }
-  .postit { position:relative; border:0; border-radius:.2rem .2rem .45rem .2rem; padding:.7rem .7rem 1.1rem; margin:0 0 .7rem; box-shadow: 2px 3px 0 rgba(28,24,20,.08); min-height:7.5rem; }
+  .postit { position:relative; border:0; border-radius:.2rem .2rem .45rem .2rem; padding:1.15rem .7rem .8rem; margin:0 0 .7rem; box-shadow: 2px 3px 0 rgba(28,24,20,.08); min-height:7.5rem; }
+  .postit.dragging { opacity:.45; }
   .postit textarea { width:100%; height:6.2rem; border:0; resize:vertical; background:transparent; font:inherit; font-size:.88rem; line-height:1.35; color:var(--ink); outline:none; }
-  .postit .x { position:absolute; top:.2rem; right:.35rem; border:0; background:transparent; cursor:pointer; color:#7a5340; font-size:.9rem; }
+  .postit .x { position:absolute; top:.15rem; right:.3rem; border:0; background:transparent; cursor:pointer; color:#7a5340; font-size:.9rem; }
+  .postit .grab { position:absolute; top:.2rem; left:.4rem; cursor:grab; color:#8a6a48; font-size:.7rem; letter-spacing:.12em; user-select:none; }
+  .modal { position:fixed; inset:0; background:rgba(28,24,20,.35); display:flex; align-items:center; justify-content:center; z-index:40; padding:1rem; }
+  .modal[hidden] { display:none !important; }
+  .sheet { background:var(--card); width:min(28rem,100%); max-height:82vh; overflow:auto; border-radius:1rem; padding:1.15rem 1.15rem 1rem; box-shadow:0 18px 50px rgba(28,24,20,.18); }
+  .sheet h3 { margin:0 0 .3rem; }
+  .sheet .hint { margin-bottom:.8rem; }
+  .dl-group { margin:.75rem 0; padding:.55rem 0; border-top:1px solid var(--line); }
+  .dl-group h4 { margin:0 0 .4rem; font-size:.88rem; }
+  .dl-group label { display:flex; gap:.4rem; align-items:flex-start; font-size:.82rem; margin:.22rem 0; cursor:pointer; }
+  .sheet-actions { display:flex; gap:.45rem; justify-content:flex-end; margin-top:.8rem; }
+  .sheet-actions button { border:1px solid var(--line); background:var(--paper); padding:.45rem .8rem; border-radius:.55rem; font:inherit; cursor:pointer; }
+  .sheet-actions .go { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  #pdf-root { position:fixed; left:-9999px; top:0; width:720px; background:#fffaf2; color:#1c1814; padding:28px 32px; font-family:"Iowan Old Style", Palatino, "Times New Roman", serif; }
+  #pdf-root h1 { font-size:22px; margin:0 0 4px; }
+  #pdf-root .meta { color:#6e665c; font-size:12px; margin:0 0 18px; }
+  #pdf-root h2 { font-size:16px; border-bottom:1px solid #ddd4c6; padding-bottom:6px; margin:22px 0 10px; }
+  #pdf-root h3 { font-size:13px; color:#9c3b2e; margin:14px 0 6px; }
+  #pdf-root .pbox { background:#f5e59a; padding:10px 12px; margin:0 0 10px; border-radius:4px; white-space:pre-wrap; }
+  #pdf-root table { width:100%; border-collapse:collapse; font-size:12px; }
+  #pdf-root td { border-bottom:1px solid #eee6d8; padding:4px 8px 4px 0; vertical-align:top; }
+  #pdf-root td.jp { font-weight:600; width:38%; }
   header { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom:1.2rem; }
   h1 { font-size:1.35rem; font-weight:600; letter-spacing:.02em; margin:0; }
   .sub { color:var(--mute); font-size:.85rem; }
@@ -819,16 +841,43 @@
   </div>
   <aside class="stickies">
     <h2>Post-it</h2>
-    <p class="hint">Kişisel notlar. Bu bilgisayarın tarayıcısında saklanır; sunucuya gitmez.</p>
+    <p class="hint">Kişisel notlar bu Mac’te saklanır. Tutup sırasını değiştirebilirsin.</p>
     <div class="stick-tools">
       <button type="button" id="add-sticky">+ Not</button>
-      <button type="button" id="dl-sticky">İndir</button>
-      <label>Yükle<input type="file" id="up-sticky" accept="application/json" hidden></label>
+      <button type="button" id="dl-sticky">İndir PDF</button>
     </div>
     <div id="sticky-list"></div>
   </aside>
 </div>
+<div class="modal" id="dl-modal" hidden>
+  <div class="sheet">
+    <h3>PDF indir</h3>
+    <p class="hint">İstediğini işaretle. Hepsi veya tek tek.</p>
+    <div class="dl-group">
+      <h4>Kişisel notlar</h4>
+      <label><input type="checkbox" id="all-sticky" checked> Hepsi</label>
+      <div id="dl-stickies"></div>
+    </div>
+    <div class="dl-group">
+      <h4>Ders notları</h4>
+      <label><input type="checkbox" id="all-lessons"> Hepsi</label>
+      <div id="dl-lessons"></div>
+    </div>
+    <div class="dl-group">
+      <h4>Vocab</h4>
+      <label><input type="checkbox" id="all-vocab"> Hepsi</label>
+      <div id="dl-vocab"></div>
+    </div>
+    <div class="sheet-actions">
+      <button type="button" id="dl-cancel">Vazgeç</button>
+      <button type="button" class="go" id="dl-go">PDF oluştur</button>
+    </div>
+  </div>
+</div>
+<div id="pdf-root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
+const VOCAB = [{"front": "ikimasu", "back": "gitmek", "tag": "Verbs"}, {"front": "kimasu", "back": "gelmek", "tag": "Verbs"}, {"front": "kimashita", "back": "geldi", "tag": "Verbs"}, {"front": "kaerimasu", "back": "dönmek, eve dönmek (+ ni)", "tag": "Verbs"}, {"front": "kakimasu", "back": "yazmak", "tag": "Verbs"}, {"front": "yomimasu", "back": "okumak", "tag": "Verbs"}, {"front": "agemasu", "back": "vermek", "tag": "Verbs"}, {"front": "moraimasu", "back": "almak", "tag": "Verbs"}, {"front": "tsukaimasu", "back": "kullanmak", "tag": "Verbs"}, {"front": "shimasu", "back": "yapmak", "tag": "Verbs"}, {"front": "yarimasu", "back": "yapmak (= shimasu)", "tag": "Verbs"}, {"front": "iimasu", "back": "söylemek / demek", "tag": "Verbs"}, {"front": "iimashita", "back": "söyledi", "tag": "Verbs"}, {"front": "moushimasu", "back": "…diye söylerler (adım …dir)", "tag": "Verbs"}, {"front": "wakarimasu", "back": "anlamak (+ ga)", "tag": "Verbs"}, {"front": "wakarimasen", "back": "anlamamak", "tag": "Verbs"}, {"front": "shirimasu", "back": "bilmek (+ wo)", "tag": "Verbs"}, {"front": "shitteimasu", "back": "biliyorum", "tag": "Verbs"}, {"front": "shirimasen", "back": "bilmiyorum", "tag": "Verbs"}, {"front": "manabimasu", "back": "öğrenmek (+ wo)", "tag": "Verbs"}, {"front": "benkyou shimasu", "back": "ders çalışmak (+ wo)", "tag": "Verbs"}, {"front": "imasu", "back": "var olmak (canlı)", "tag": "Verbs"}, {"front": "arimasu", "back": "var olmak (cansız)", "tag": "Verbs"}, {"front": "ii", "back": "iyi", "tag": "Adjectives"}, {"front": "ii ne", "back": "iyi ya / beğenmek (internet)", "tag": "Adjectives"}, {"front": "suki", "back": "sevmek (sıfat)", "tag": "Adjectives"}, {"front": "dai suki", "back": "çok sevmek", "tag": "Adjectives"}, {"front": "kirai", "back": "nefret etmek (sıfat)", "tag": "Adjectives"}, {"front": "hoshii", "back": "istemek (sıfat)", "tag": "Adjectives"}, {"front": "watashi", "back": "ben", "tag": "People"}, {"front": "anata", "back": "sen", "tag": "People"}, {"front": "kare", "back": "o (erkek)", "tag": "People"}, {"front": "kanojo", "back": "o (kadın)", "tag": "People"}, {"front": "-tachi", "back": "çoğul, insanlar için", "tag": "People"}, {"front": "hito", "back": "kişi", "tag": "People"}, {"front": "minna", "back": "herkes", "tag": "People"}, {"front": "gakusei", "back": "öğrenci", "tag": "People"}, {"front": "ryuugakusei", "back": "uluslararası öğrenci", "tag": "People"}, {"front": "sensei", "back": "öğretmen", "tag": "People"}, {"front": "torukojin", "back": "Türk (kişi)", "tag": "People"}, {"front": "kyou", "back": "bugün", "tag": "Time"}, {"front": "kinou", "back": "dün", "tag": "Time"}, {"front": "ashita", "back": "yarın", "tag": "Time"}, {"front": "asa", "back": "sabah", "tag": "Time"}, {"front": "hiru", "back": "öğlen", "tag": "Time"}, {"front": "ban", "back": "akşam", "tag": "Time"}, {"front": "yoru", "back": "gece", "tag": "Time"}, {"front": "senshuu", "back": "geçen hafta", "tag": "Time"}, {"front": "konshuu", "back": "bu hafta", "tag": "Time"}, {"front": "raishuu", "back": "gelecek hafta", "tag": "Time"}, {"front": "sakunen", "back": "geçen yıl", "tag": "Time"}, {"front": "kotoshi", "back": "bu yıl", "tag": "Time"}, {"front": "rainen", "back": "gelecek yıl", "tag": "Time"}, {"front": "kako", "back": "geçmiş", "tag": "Time"}, {"front": "genzai", "back": "şimdi", "tag": "Time"}, {"front": "mirai", "back": "gelecek", "tag": "Time"}, {"front": "natsu", "back": "yaz", "tag": "Time"}, {"front": "-ji", "back": "saat (o’clock)", "tag": "Time"}, {"front": "jikan", "back": "saat / zaman", "tag": "Time"}, {"front": "nihon", "back": "Japonya", "tag": "Place"}, {"front": "toruko", "back": "Türkiye", "tag": "Place"}, {"front": "tokyo", "back": "Tokyo", "tag": "Place"}, {"front": "istanbul", "back": "İstanbul", "tag": "Place"}, {"front": "gakkou", "back": "okul", "tag": "Place"}, {"front": "ie", "back": "ev", "tag": "Place"}, {"front": "mise", "back": "dükkan", "tag": "Place"}, {"front": "ginkou", "back": "banka", "tag": "Place"}, {"front": "pen", "back": "kalem", "tag": "Things"}, {"front": "no-to", "back": "not defteri", "tag": "Things"}, {"front": "shukudai", "back": "ödev", "tag": "Things"}, {"front": "hon", "back": "kitap", "tag": "Things"}, {"front": "basu", "back": "otobüs", "tag": "Things"}, {"front": "kuruma", "back": "araba", "tag": "Things"}, {"front": "sushi", "back": "suşi", "tag": "Things"}, {"front": "pakuchi", "back": "kişniş", "tag": "Things"}, {"front": "tabemono", "back": "yemek", "tag": "Things"}, {"front": "kore", "back": "bu", "tag": "This / that"}, {"front": "sore", "back": "o (near you)", "tag": "This / that"}, {"front": "are", "back": "şu", "tag": "This / that"}, {"front": "kono", "back": "bu + noun", "tag": "This / that"}, {"front": "sono", "back": "o + noun", "tag": "This / that"}, {"front": "ano", "back": "şu + noun", "tag": "This / that"}, {"front": "koko", "back": "burası", "tag": "This / that"}, {"front": "soko", "back": "orası", "tag": "This / that"}, {"front": "asoko", "back": "şurası", "tag": "This / that"}, {"front": "hajimemashite", "back": "memnun oldum / selamlar (tanışırken)", "tag": "Greetings"}, {"front": "ohayou (gozaimasu)", "back": "günaydın", "tag": "Greetings"}, {"front": "konnichiwa", "back": "merhaba", "tag": "Greetings"}, {"front": "konbanwa", "back": "iyi akşamlar", "tag": "Greetings"}, {"front": "oyasumi (nasai)", "back": "iyi geceler", "tag": "Greetings"}, {"front": "otsukaresama", "back": "kolay gelsin", "tag": "Greetings"}, {"front": "hai", "back": "evet", "tag": "Greetings"}, {"front": "iie", "back": "hayır", "tag": "Greetings"}, {"front": "iya", "back": "hayır (daha günlük)", "tag": "Greetings"}, {"front": "nani", "back": "ne", "tag": "Question words"}, {"front": "dare", "back": "kim", "tag": "Question words"}, {"front": "donata", "back": "kim (kibar)", "tag": "Question words"}, {"front": "itsu", "back": "ne zaman", "tag": "Question words"}, {"front": "itsu kara", "back": "ne zamandan beri", "tag": "Question words"}, {"front": "doko", "back": "nere", "tag": "Question words"}, {"front": "naze", "back": "neden", "tag": "Question words"}, {"front": "nanji", "back": "saat kaç", "tag": "Question words"}, {"front": "dou", "back": "nasıl", "tag": "Question words"}, {"front": "dou yatte", "back": "ne şekilde (arkasından fiil gelince)", "tag": "Question words"}, {"front": "-go", "back": "dil eki (-ce / -ca)", "tag": "Language"}, {"front": "torukogo", "back": "Türkçe", "tag": "Language"}, {"front": "nihongo", "back": "Japonca", "tag": "Language"}, {"front": "eigo", "back": "İngilizce", "tag": "Language"}, {"front": "demo", "back": "fakat", "tag": "Connectors"}, {"front": "shikashi", "back": "fakat", "tag": "Connectors"}, {"front": "soshite", "back": "and then / sonrasında", "tag": "Connectors"}, {"front": "naze nara", "back": "çünkü (naze’nin cevabı)", "tag": "Connectors"}, {"front": "wa", "back": "topic", "tag": "Particles"}, {"front": "ga", "back": "vurgu; suki / kirai / hoshii / wakarimasu / imasu / arimasu", "tag": "Particles"}, {"front": "wo", "back": "object (belirtme)", "tag": "Particles"}, {"front": "ni", "back": "yönelme; imasu/arimasu ile yer", "tag": "Particles"}, {"front": "he", "back": "fiziksel yön (okunuşu: e)", "tag": "Particles"}, {"front": "no", "back": "…nin (possession / of)", "tag": "Particles"}, {"front": "no koto", "back": "kişi + suki (X no koto ga suki)", "tag": "Particles"}, {"front": "de", "back": "-de / -da, ile (yer veya araç)", "tag": "Particles"}, {"front": "to", "back": "ile / ve / diye", "tag": "Particles"}, {"front": "to issho ni", "back": "birlikte", "tag": "Particles"}, {"front": "ka", "back": "mi? (soru)", "tag": "Particles"}, {"front": "kara", "back": "…den (from)", "tag": "Particles"}, {"front": "made", "back": "…e kadar (until)", "tag": "Particles"}, {"front": "ja arimasen", "back": "değildir", "tag": "Particles"}, {"front": "de wa arimasen", "back": "değildir (daha resmi)", "tag": "Particles"}];
 const links = [...document.querySelectorAll("#outline a")];
 const ids = links.map(a => a.getAttribute("href").slice(1));
 const els = ids.map(id => document.getElementById(id)).filter(Boolean);
@@ -849,15 +898,20 @@ function loadStickies() {
   catch (e) { return []; }
 }
 let stickies = loadStickies();
+let dragFrom = null;
 function saveStickies() {
   localStorage.setItem(STICKY_KEY, JSON.stringify(stickies));
+}
+function esc(s) {
+  return String(s || "").replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 }
 function renderStickies() {
   const box = document.getElementById("sticky-list");
   box.innerHTML = stickies.map((s, i) =>
-    `<div class="postit" style="background:${s.color}">
+    `<div class="postit" data-i="${i}" style="background:${s.color}">
+      <span class="grab" draggable="true" data-drag="${i}" title="Sürükle">⋮⋮</span>
       <button type="button" class="x" data-del="${i}" aria-label="Sil">×</button>
-      <textarea data-i="${i}" placeholder="not...">${s.text.replace(/</g,"&lt;")}</textarea>
+      <textarea data-i="${i}" placeholder="not...">${esc(s.text)}</textarea>
     </div>`
   ).join("");
 }
@@ -879,26 +933,118 @@ document.getElementById("sticky-list").addEventListener("click", e => {
   stickies.splice(+b.dataset.del, 1);
   saveStickies(); renderStickies();
 });
-document.getElementById("dl-sticky").onclick = () => {
-  const blob = new Blob([JSON.stringify(stickies, null, 2)], {type:"application/json"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "n5-kisisel-notlar.json";
-  a.click();
-  URL.revokeObjectURL(a.href);
+document.getElementById("sticky-list").addEventListener("dragstart", e => {
+  const g = e.target.closest("[data-drag]");
+  if (!g) return;
+  dragFrom = +g.dataset.drag;
+  g.closest(".postit").classList.add("dragging");
+  e.dataTransfer.effectAllowed = "move";
+});
+document.getElementById("sticky-list").addEventListener("dragend", e => {
+  const p = e.target.closest(".postit");
+  if (p) p.classList.remove("dragging");
+  dragFrom = null;
+});
+document.getElementById("sticky-list").addEventListener("dragover", e => {
+  const p = e.target.closest(".postit");
+  if (!p || dragFrom === null) return;
+  e.preventDefault();
+  const to = +p.dataset.i;
+  if (to === dragFrom) return;
+  const item = stickies.splice(dragFrom, 1)[0];
+  stickies.splice(to, 0, item);
+  dragFrom = to;
+  saveStickies();
+  renderStickies();
+});
+
+const modal = document.getElementById("dl-modal");
+function fillDownload() {
+  const st = document.getElementById("dl-stickies");
+  st.innerHTML = stickies.map((s, i) => {
+    const label = (s.text || "").trim().split("\n")[0].slice(0, 42) || "(boş not)";
+    return `<label><input type="checkbox" class="c-sticky" data-i="${i}"> ${esc(label)}</label>`;
+  }).join("") || "<p class='hint'>Henüz kişisel not yok.</p>";
+  const ls = document.getElementById("dl-lessons");
+  ls.innerHTML = [...document.querySelectorAll("article[id]")].map(a => {
+    const t = a.querySelector("h2")?.textContent || a.id;
+    return `<label><input type="checkbox" class="c-lesson" data-id="${a.id}"> ${esc(t)}</label>`;
+  }).join("");
+  const cats = [...new Set(VOCAB.map(v => v.tag))];
+  document.getElementById("dl-vocab").innerHTML = cats.map(c =>
+    `<label><input type="checkbox" class="c-vocab" data-cat="${esc(c)}"> ${esc(c)}</label>`
+  ).join("");
+  document.getElementById("all-sticky").checked = true;
+  document.getElementById("all-lessons").checked = false;
+  document.getElementById("all-vocab").checked = false;
+  document.querySelectorAll(".c-sticky").forEach(c => c.checked = true);
+}
+document.getElementById("all-sticky").onchange = e => {
+  document.querySelectorAll(".c-sticky").forEach(c => c.checked = e.target.checked);
 };
-document.getElementById("up-sticky").onchange = e => {
-  const f = e.target.files && e.target.files[0];
-  if (!f) return;
-  const r = new FileReader();
-  r.onload = () => {
-    try {
-      const data = JSON.parse(r.result);
-      if (Array.isArray(data)) { stickies = data; saveStickies(); renderStickies(); }
-    } catch (err) { alert("JSON okunamadı"); }
-  };
-  r.readAsText(f);
-  e.target.value = "";
+document.getElementById("all-lessons").onchange = e => {
+  document.querySelectorAll(".c-lesson").forEach(c => c.checked = e.target.checked);
+};
+document.getElementById("all-vocab").onchange = e => {
+  document.querySelectorAll(".c-vocab").forEach(c => c.checked = e.target.checked);
+};
+document.getElementById("dl-sticky").onclick = () => { fillDownload(); modal.hidden = false; };
+document.getElementById("dl-cancel").onclick = () => { modal.hidden = true; };
+modal.addEventListener("click", e => { if (e.target === modal) modal.hidden = true; });
+
+function buildPdfHtml() {
+  const stickyIdx = [...document.querySelectorAll(".c-sticky:checked")].map(c => +c.dataset.i);
+  const lessonIds = [...document.querySelectorAll(".c-lesson:checked")].map(c => c.dataset.id);
+  const vocabCats = [...document.querySelectorAll(".c-vocab:checked")].map(c => c.dataset.cat);
+  const now = new Date().toLocaleDateString("tr-TR", { day:"numeric", month:"long", year:"numeric" });
+  let html = `<h1>N5 Sensei</h1><p class="meta">${now}</p>`;
+  if (stickyIdx.length) {
+    html += `<h2>Kişisel notlar</h2>`;
+    stickyIdx.forEach(i => {
+      const t = (stickies[i] && stickies[i].text || "").trim() || "(boş)";
+      html += `<div class="pbox">${esc(t)}</div>`;
+    });
+  }
+  if (lessonIds.length) {
+    html += `<h2>Ders notları</h2>`;
+    lessonIds.forEach(id => {
+      const a = document.getElementById(id);
+      if (a) html += `<div class="lesson">${a.innerHTML}</div>`;
+    });
+  }
+  if (vocabCats.length) {
+    html += `<h2>Kelimeler</h2>`;
+    vocabCats.forEach(cat => {
+      html += `<h3>${esc(cat)}</h3><table>`;
+      VOCAB.filter(v => v.tag === cat).forEach(v => {
+        html += `<tr><td class="jp">${esc(v.front)}</td><td>${esc(v.back)}</td></tr>`;
+      });
+      html += `</table>`;
+    });
+  }
+  return html;
+}
+document.getElementById("dl-go").onclick = () => {
+  const root = document.getElementById("pdf-root");
+  const inner = buildPdfHtml();
+  if (inner.indexOf("<h2>") === -1) { alert("Bir şey seç."); return; }
+  root.innerHTML = inner;
+  const name = "n5-sensei-" + new Date().toISOString().slice(0,10) + ".pdf";
+  const go = () => html2pdf().set({
+    margin: [12, 12, 14, 12],
+    filename: name,
+    image: { type: "jpeg", quality: 0.95 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: "#fffaf2" },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    pagebreak: { mode: ["css", "legacy"], avoid: [".pbox", "tr", "h2", "h3"] }
+  }).from(root).save().then(() => { modal.hidden = true; root.innerHTML = ""; });
+  if (window.html2pdf) go();
+  else {
+    const w = window.open("", "_blank");
+    w.document.write(`<html><head><title>${name}</title><style>body{font-family:Palatino,serif;padding:24px;}</style></head><body>${inner}</body></html>`);
+    w.document.close(); w.focus(); w.print();
+    modal.hidden = true;
+  }
 };
 renderStickies();
 </script>
