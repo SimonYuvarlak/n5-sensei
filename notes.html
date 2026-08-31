@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>N5 Sensei — Notlar</title>
 <style>
-  :root { --paper:#f4efe6; --ink:#1c1814; --mute:#6e665c; --line:#ddd4c6; --accent:#9c3b2e; --card:#fffaf2; --side:17.5rem; }
+  :root { --paper:#f4efe6; --ink:#1c1814; --mute:#6e665c; --line:#ddd4c6; --accent:#9c3b2e; --card:#fffaf2; --side:17.5rem; --stick:18.5rem; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { margin:0; min-height:100vh; background:var(--paper); color:var(--ink); font-family: "Iowan Old Style", Palatino, "Times New Roman", serif; }
-  .shell { display:grid; grid-template-columns: var(--side) 1fr; min-height:100vh; }
+  .shell { display:grid; grid-template-columns: var(--side) minmax(22rem,1fr) var(--stick); min-height:100vh; }
   .outline { position:sticky; top:0; height:100vh; overflow:auto; padding:1.1rem .85rem 2rem 1rem; border-right:1px solid var(--line); background:#efe8dc; }
   .outline h2 { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); margin:0 0 .7rem; font-weight:600; }
   .outline a { display:block; color:var(--ink); text-decoration:none; font-size:.82rem; line-height:1.25; padding:.22rem .4rem; border-radius:.35rem; border-left:2px solid transparent; }
@@ -18,7 +18,15 @@
   .outline .l1 { font-weight:600; margin-top:.65rem; }
   .outline .l2 { padding-left:.85rem; color:#3d372f; }
   .outline .l3 { padding-left:1.55rem; font-size:.76rem; color:var(--mute); }
-  .main { max-width: 44rem; padding: 1.2rem 1.3rem 3rem; }
+  .main { max-width: 44rem; width:100%; padding: 1.2rem 1.3rem 3rem; justify-self:center; }
+  .stickies { position:sticky; top:0; height:100vh; overflow:auto; padding:1.1rem .85rem 2rem .8rem; border-left:1px solid var(--line); background:#efe8dc; }
+  .stickies h2 { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); margin:0 0 .35rem; font-weight:600; }
+  .stickies .hint { color:var(--mute); font-size:.75rem; margin:0 0 .8rem; line-height:1.35; }
+  .stick-tools { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:.8rem; }
+  .stick-tools button, .stick-tools label { border:1px solid var(--line); background:var(--card); color:var(--ink); padding:.28rem .55rem; border-radius:999px; font:inherit; font-size:.72rem; cursor:pointer; }
+  .postit { position:relative; border:0; border-radius:.2rem .2rem .45rem .2rem; padding:.7rem .7rem 1.1rem; margin:0 0 .7rem; box-shadow: 2px 3px 0 rgba(28,24,20,.08); min-height:7.5rem; }
+  .postit textarea { width:100%; height:6.2rem; border:0; resize:vertical; background:transparent; font:inherit; font-size:.88rem; line-height:1.35; color:var(--ink); outline:none; }
+  .postit .x { position:absolute; top:.2rem; right:.35rem; border:0; background:transparent; cursor:pointer; color:#7a5340; font-size:.9rem; }
   header { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom:1.2rem; }
   h1 { font-size:1.35rem; font-weight:600; letter-spacing:.02em; margin:0; }
   .sub { color:var(--mute); font-size:.85rem; }
@@ -36,6 +44,10 @@
   p.tr { color:var(--mute); margin-bottom:.15rem; }
   ul { margin:.2rem 0 .6rem 1.1rem; padding:0; }
   li { margin:.15rem 0; }
+  @media (max-width: 1100px) {
+    .shell { grid-template-columns: var(--side) 1fr; }
+    .stickies { position:relative; height:auto; border-left:0; border-top:1px solid var(--line); grid-column:1 / -1; }
+  }
   @media (max-width: 860px) {
     .shell { grid-template-columns: 1fr; }
     .outline { position:relative; height:auto; max-height:38vh; border-right:0; border-bottom:1px solid var(--line); }
@@ -805,6 +817,16 @@
 <p>ii ne — Instagram’daki beğenmek gibi. “İyiymiş ya / iyi ya.” İnternet dili.</p>
 </article>
   </div>
+  <aside class="stickies">
+    <h2>Post-it</h2>
+    <p class="hint">Kişisel notlar. Bu bilgisayarın tarayıcısında saklanır; sunucuya gitmez.</p>
+    <div class="stick-tools">
+      <button type="button" id="add-sticky">+ Not</button>
+      <button type="button" id="dl-sticky">İndir</button>
+      <label>Yükle<input type="file" id="up-sticky" accept="application/json" hidden></label>
+    </div>
+    <div id="sticky-list"></div>
+  </aside>
 </div>
 <script>
 const links = [...document.querySelectorAll("#outline a")];
@@ -819,6 +841,66 @@ function setOn() {
 }
 window.addEventListener("scroll", setOn, {passive:true});
 setOn();
+
+const STICKY_KEY = "n5-sensei-stickies";
+const COLORS = ["#f5e59a","#f3c6b8","#d4e8c5","#c9d9f2"];
+function loadStickies() {
+  try { return JSON.parse(localStorage.getItem(STICKY_KEY) || "[]"); }
+  catch (e) { return []; }
+}
+let stickies = loadStickies();
+function saveStickies() {
+  localStorage.setItem(STICKY_KEY, JSON.stringify(stickies));
+}
+function renderStickies() {
+  const box = document.getElementById("sticky-list");
+  box.innerHTML = stickies.map((s, i) =>
+    `<div class="postit" style="background:${s.color}">
+      <button type="button" class="x" data-del="${i}" aria-label="Sil">×</button>
+      <textarea data-i="${i}" placeholder="not...">${s.text.replace(/</g,"&lt;")}</textarea>
+    </div>`
+  ).join("");
+}
+document.getElementById("add-sticky").onclick = () => {
+  stickies.unshift({ id: Date.now(), text: "", color: COLORS[stickies.length % COLORS.length] });
+  saveStickies(); renderStickies();
+  const ta = document.querySelector("#sticky-list textarea");
+  if (ta) ta.focus();
+};
+document.getElementById("sticky-list").addEventListener("input", e => {
+  const ta = e.target.closest("textarea");
+  if (!ta) return;
+  stickies[+ta.dataset.i].text = ta.value;
+  saveStickies();
+});
+document.getElementById("sticky-list").addEventListener("click", e => {
+  const b = e.target.closest("[data-del]");
+  if (!b) return;
+  stickies.splice(+b.dataset.del, 1);
+  saveStickies(); renderStickies();
+});
+document.getElementById("dl-sticky").onclick = () => {
+  const blob = new Blob([JSON.stringify(stickies, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "n5-kisisel-notlar.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+document.getElementById("up-sticky").onchange = e => {
+  const f = e.target.files && e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const data = JSON.parse(r.result);
+      if (Array.isArray(data)) { stickies = data; saveStickies(); renderStickies(); }
+    } catch (err) { alert("JSON okunamadı"); }
+  };
+  r.readAsText(f);
+  e.target.value = "";
+};
+renderStickies();
 </script>
 </body>
 </html>
