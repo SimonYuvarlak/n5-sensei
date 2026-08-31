@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "npx --yes serve -s . -l $PORT",
+    "startCommand": "npx --yes serve . -l $PORT --no-clean-urls",
     "restartPolicyType": "ON_FAILURE"
   }
 }
