@@ -56,12 +56,13 @@
   #print-paper td { border-bottom:1px solid #eee6d8; padding:4px 8px 4px 0; vertical-align:top; }
   #print-paper td.jp { font-weight:600; width:38%; }
   @media print {
-    body * { visibility:hidden !important; }
-    #print-overlay, #print-overlay * { visibility:visible !important; }
-    #print-overlay { position:static; background:#fff; display:block; }
+    @page { size: A4; margin: 14mm; }
+    html, body { background:#fffaf2 !important; height:auto !important; overflow:visible !important; }
+    body > *:not(#print-overlay) { display:none !important; }
+    #print-overlay { display:block !important; position:static !important; inset:auto !important; background:none !important; height:auto !important; }
     #print-toolbar { display:none !important; }
-    #print-scroll { overflow:visible; padding:0; }
-    #print-paper { box-shadow:none; width:auto; }
+    #print-scroll { overflow:visible !important; height:auto !important; padding:0 !important; }
+    #print-paper { box-shadow:none !important; width:auto !important; max-width:none !important; margin:0 !important; padding:0 !important; }
   }
   header { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom:1.2rem; }
   h1 { font-size:1.35rem; font-weight:600; letter-spacing:.02em; margin:0; }
