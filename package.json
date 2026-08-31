@@ -2,6 +2,6 @@
   "name": "n5-sensei",
   "private": true,
   "scripts": {
-    "start": "npx --yes serve . -l $PORT --no-clean-urls"
+    "start": "npx --yes serve . -l $PORT"
   }
 }
