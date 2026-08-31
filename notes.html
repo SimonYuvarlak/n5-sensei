@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>N5 Sensei — Notlar</title>
+<title>SUKISEN — Notlar</title>
 <style>
   :root { --paper:#f4efe6; --ink:#1c1814; --mute:#6e665c; --line:#ddd4c6; --accent:#9c3b2e; --card:#fffaf2; --side:17.5rem; --stick:18.5rem; }
   * { box-sizing: border-box; }
@@ -911,11 +911,13 @@ function setOn() {
 window.addEventListener("scroll", setOn, {passive:true});
 setOn();
 
-const STICKY_KEY = "n5-sensei-stickies";
+const STICKY_KEY = "sukisen-stickies";
 const COLORS = ["#f5e59a","#f3c6b8","#d4e8c5","#c9d9f2"];
 function loadStickies() {
-  try { return JSON.parse(localStorage.getItem(STICKY_KEY) || "[]"); }
-  catch (e) { return []; }
+  try {
+    const raw = localStorage.getItem(STICKY_KEY) || localStorage.getItem("n5-sensei-stickies") || "[]";
+    return JSON.parse(raw);
+  } catch (e) { return []; }
 }
 let stickies = loadStickies();
 let dragFrom = null;
@@ -1017,7 +1019,7 @@ function buildPdfHtml() {
   const lessonIds = [...document.querySelectorAll(".c-lesson:checked")].map(c => c.dataset.id);
   const vocabCats = [...document.querySelectorAll(".c-vocab:checked")].map(c => c.dataset.cat);
   const now = new Date().toLocaleDateString("tr-TR", { day:"numeric", month:"long", year:"numeric" });
-  let html = `<h1>N5 Sensei</h1><p class="meta">${now}</p>`;
+  let html = `<h1>SUKISEN</h1><p class="meta">${now}</p>`;
   if (stickyIdx.length) {
     html += `<h2>Kişisel notlar</h2>`;
     stickyIdx.forEach(i => {
