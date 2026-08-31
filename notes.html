@@ -5,19 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>N5 Sensei — Notlar</title>
 <style>
-  :root { --paper:#f4efe6; --ink:#1c1814; --mute:#6e665c; --line:#ddd4c6; --accent:#9c3b2e; --card:#fffaf2; }
+  :root { --paper:#f4efe6; --ink:#1c1814; --mute:#6e665c; --line:#ddd4c6; --accent:#9c3b2e; --card:#fffaf2; --side:17.5rem; }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body { margin:0; min-height:100vh; background:var(--paper); color:var(--ink); font-family: "Iowan Old Style", Palatino, "Times New Roman", serif; }
-  .wrap { max-width: 42rem; margin: 0 auto; padding: 1.5rem 1.1rem 3rem; }
+  .shell { display:grid; grid-template-columns: var(--side) 1fr; min-height:100vh; }
+  .outline { position:sticky; top:0; height:100vh; overflow:auto; padding:1.1rem .85rem 2rem 1rem; border-right:1px solid var(--line); background:#efe8dc; }
+  .outline h2 { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); margin:0 0 .7rem; font-weight:600; }
+  .outline a { display:block; color:var(--ink); text-decoration:none; font-size:.82rem; line-height:1.25; padding:.22rem .4rem; border-radius:.35rem; border-left:2px solid transparent; }
+  .outline a:hover { background:rgba(28,24,20,.06); }
+  .outline a.on { background:rgba(156,59,46,.1); border-left-color:var(--accent); color:var(--accent); }
+  .outline .l1 { font-weight:600; margin-top:.65rem; }
+  .outline .l2 { padding-left:.85rem; color:#3d372f; }
+  .outline .l3 { padding-left:1.55rem; font-size:.76rem; color:var(--mute); }
+  .main { max-width: 44rem; padding: 1.2rem 1.3rem 3rem; }
   header { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom:1.2rem; }
   h1 { font-size:1.35rem; font-weight:600; letter-spacing:.02em; margin:0; }
   .sub { color:var(--mute); font-size:.85rem; }
   .nav { display:flex; gap:.45rem; margin-bottom:1rem; }
   .nav a { border:1px solid var(--line); color:var(--ink); text-decoration:none; padding:.35rem .7rem; border-radius:999px; font-size:.8rem; }
   .nav a.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
-  .toc { display:flex; flex-wrap:wrap; gap:.45rem; margin: 0 0 1.6rem; }
-  .toc a { border:1px solid var(--line); color:var(--ink); text-decoration:none; padding:.3rem .65rem; border-radius:999px; font-size:.78rem; background:var(--card); }
   article { background:var(--card); border:1px solid var(--line); border-radius:1.1rem; padding:1.3rem 1.2rem 1.5rem; margin-bottom:1.1rem; }
+  article h2, h3, h4 { scroll-margin-top: .8rem; }
   article h2 { font-size:1.15rem; margin:0 0 .5rem; }
   article .sum { color:var(--mute); font-size:.9rem; margin:0 0 1rem; }
   h3 { font-size:1rem; margin:1.2rem 0 .4rem; }
@@ -27,25 +36,33 @@
   p.tr { color:var(--mute); margin-bottom:.15rem; }
   ul { margin:.2rem 0 .6rem 1.1rem; padding:0; }
   li { margin:.15rem 0; }
+  @media (max-width: 860px) {
+    .shell { grid-template-columns: 1fr; }
+    .outline { position:relative; height:auto; max-height:38vh; border-right:0; border-bottom:1px solid var(--line); }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="nav">
-    <a href="index.html">Kartlar</a>
-    <a class="on" href="notes.html">Notlar</a>
-  </div>
-  <header>
-    <div>
-      <h1>Ders notları</h1>
-      <div class="sub">Apple Notes → combined notes</div>
+<div class="shell">
+  <nav class="outline" id="outline">
+    <h2>İçindekiler</h2>
+    <a class="l1" href="#l1">#1 · 16 Agustos - -masu verbs and particles</a><a class="l2" href="#l1-topics-this-lesson">Topics this lesson</a><a class="l2" href="#l1-vocabulary">Vocabulary</a><a class="l3" href="#l1-verbs">Verbs</a><a class="l3" href="#l1-time">Time</a><a class="l3" href="#l1-people">People</a><a class="l3" href="#l1-place-school">Place / school</a><a class="l3" href="#l1-things">Things</a><a class="l2" href="#l1-grammar">Grammar</a><a class="l3" href="#l1-masu">-masu</a><a class="l3" href="#l1-wa-topic">wa — topic</a><a class="l3" href="#l1-wo-object-belirtme-i">wo — object (belirtme: -ı / -i)</a><a class="l3" href="#l1-ni-direction-target-e-a">ni — direction / target (-e / -a)</a><a class="l3" href="#l1-he-physical-direction">he — physical direction</a><a class="l3" href="#l1-pronouns-tachi">Pronouns + -tachi</a><a class="l2" href="#l1-example-sentences">Example sentences</a><a class="l2" href="#l1-from-class">From class</a><a class="l3" href="#l1-okunu-lar">Okunuşlar</a><a class="l1" href="#l2">#2 · 19 Agustos - desu, kore/sore/are, particles</a><a class="l2" href="#l2-topics-this-lesson">Topics this lesson</a><a class="l2" href="#l2-vocabulary">Vocabulary</a><a class="l3" href="#l2-this-that">This / that</a><a class="l3" href="#l2-people">People</a><a class="l3" href="#l2-greetings">Greetings</a><a class="l3" href="#l2-time-parts-of-the-day">Time — parts of the day</a><a class="l3" href="#l2-time-week-year">Time — week / year</a><a class="l3" href="#l2-connectors">Connectors</a><a class="l3" href="#l2-language-place-things">Language / place / things</a><a class="l3" href="#l2-verbs-new">Verbs (new)</a><a class="l3" href="#l2-particles">Particles</a><a class="l2" href="#l2-grammar">Grammar</a><a class="l3" href="#l2-desu-kibar-dir">desu — kibar “dir”</a><a class="l3" href="#l2-kore-sore-are">kore / sore / are</a><a class="l3" href="#l2-kono-sono-ano">kono / sono / ano</a><a class="l3" href="#l2-koko-soko-asoko">koko / soko / asoko</a><a class="l3" href="#l2-no-possession-nin-of">no — possession (…nin / of)</a><a class="l3" href="#l2-no-toki-ji-jikan">no toki / -ji / jikan</a><a class="l3" href="#l2-de-location-or-means">de — location or means</a><a class="l3" href="#l2-to-and-with-diye">to — and / with / “diye”</a><a class="l3" href="#l2-ka-question-mi">ka — question (mi?)</a><a class="l3" href="#l2-kara-made-from-until">kara … made — from … until</a><a class="l3" href="#l2-go-language-suffix">-go — language suffix</a><a class="l2" href="#l2-example-sentences">Example sentences</a><a class="l2" href="#l2-from-class">From class</a><a class="l1" href="#l3">#3 · 24 Agustos - suki/kirai, ga, imasu/arimasu</a><a class="l2" href="#l3-topics-this-lesson">Topics this lesson</a><a class="l2" href="#l3-vocabulary">Vocabulary</a><a class="l3" href="#l3-adjectives">Adjectives</a><a class="l3" href="#l3-verbs">Verbs</a><a class="l3" href="#l3-question-words">Question words</a><a class="l3" href="#l3-people-things">People / things</a><a class="l3" href="#l3-particles">Particles</a><a class="l2" href="#l3-grammar">Grammar</a><a class="l3" href="#l3-ga-vs-wa">ga vs wa</a><a class="l3" href="#l3-suki-kirai-hoshii-wakarimasu-ga">suki / kirai / hoshii / wakarimasu + ga</a><a class="l3" href="#l3-shirimasu-manabimasu-benkyou-shimasu-wo">shirimasu / manabimasu / benkyou shimasu + wo</a><a class="l3" href="#l3-kaerimasu-ni">kaerimasu + ni</a><a class="l3" href="#l3-question-words-2">Question words</a><a class="l3" href="#l3-to-moushimasu">…to moushimasu</a><a class="l3" href="#l3-masen">-masen</a><a class="l3" href="#l3-imasu-arimasu-ni">imasu / arimasu + ni</a><a class="l2" href="#l3-example-sentences">Example sentences</a><a class="l2" href="#l3-from-class">From class</a><a class="l1" href="#l4">#4 · 28 Agustos - ja arimasen, to iimashita</a><a class="l2" href="#l4-topics-this-lesson">Topics this lesson</a><a class="l2" href="#l4-vocabulary">Vocabulary</a><a class="l3" href="#l4-verbs">Verbs</a><a class="l3" href="#l4-things">Things</a><a class="l3" href="#l4-greetings">Greetings</a><a class="l3" href="#l4-question-words">Question words</a><a class="l3" href="#l4-connectors">Connectors</a><a class="l3" href="#l4-particles">Particles</a><a class="l2" href="#l4-grammar">Grammar</a><a class="l3" href="#l4-dou-yatte-fiil">dou yatte + fiil</a><a class="l3" href="#l4-mashita-ge-mi">-mashita — geçmiş</a><a class="l3" href="#l4-to-iimashita-diye-s-yledi">to iimashita — “…diye söyledi”</a><a class="l3" href="#l4-kore-wa-desu">kore wa … desu</a><a class="l3" href="#l4-de-wa-arimasen-ja-arimasen-de-ildir">de wa arimasen / ja arimasen — değildir</a><a class="l3" href="#l4-demo-shikashi">demo / shikashi</a><a class="l3" href="#l4-hai-iie">hai / iie</a><a class="l2" href="#l4-example-sentences">Example sentences</a><a class="l2" href="#l4-from-class">From class</a><a class="l1" href="#l5">#5 · 30 Agustos - ga-words, shitteimasu ka, naze nara</a><a class="l2" href="#l5-topics-this-lesson">Topics this lesson</a><a class="l2" href="#l5-vocabulary">Vocabulary</a><a class="l3" href="#l5-verbs">Verbs</a><a class="l3" href="#l5-adjectives">Adjectives</a><a class="l3" href="#l5-people">People</a><a class="l3" href="#l5-place">Place</a><a class="l3" href="#l5-things">Things</a><a class="l3" href="#l5-greetings">Greetings</a><a class="l3" href="#l5-question-words">Question words</a><a class="l3" href="#l5-language">Language</a><a class="l3" href="#l5-connectors">Connectors</a><a class="l3" href="#l5-particles">Particles</a><a class="l2" href="#l5-grammar">Grammar</a><a class="l3" href="#l5-ga-kelimeler">ga-kelimeler</a><a class="l3" href="#l5-ka-shitteimasu-ka-biliyor-musun">… ka shitteimasu ka — biliyor musun?</a><a class="l3" href="#l5-suki">suki</a><a class="l3" href="#l5-naze-nara-nk">naze nara — çünkü</a><a class="l3" href="#l5-kirai">kirai</a><a class="l3" href="#l5-hoshii">hoshii</a><a class="l3" href="#l5-wakarimasu-wakarimasen">wakarimasu / wakarimasen</a><a class="l2" href="#l5-example-sentences">Example sentences</a><a class="l2" href="#l5-from-class">From class</a>
+  </nav>
+  <div class="main">
+    <div class="nav">
+      <a href="index.html">Kartlar</a>
+      <a class="on" href="notes.html">Notlar</a>
     </div>
-  </header>
-  <div class="toc"><a href="#l1">#1</a><a href="#l2">#2</a><a href="#l3">#3</a><a href="#l4">#4</a><a href="#l5">#5</a></div>
-  <article id="l1">
+    <header>
+      <div>
+        <h1>Ders notları</h1>
+        <div class="sub">Bütün dersler · tıkla, o başlığa git</div>
+      </div>
+    </header>
+    <article id="l1">
 <h2>#1 - 16 Agustos - -masu verbs and particles</h2>
 <p class="sum">Kibar fiiller, temel ekler, zamirler.</p>
-<h3>Topics this lesson</h3>
+<h3 id="l1-topics-this-lesson">Topics this lesson</h3>
 <ul>
 <li>masu verbs (kibar geniş zaman / gelecek)</li>
 <li>Topic particle wa</li>
@@ -53,8 +70,8 @@
 <li>Direction particles ni and he</li>
 <li>Pronouns and plural -tachi</li>
 </ul>
-<h3>Vocabulary</h3>
-<h4>Verbs</h4>
+<h3 id="l1-vocabulary">Vocabulary</h3>
+<h4 id="l1-verbs">Verbs</h4>
 <p>ikimasu — gitmek</p>
 <p>kimasu — gelmek</p>
 <p>kakimasu — yazmak</p>
@@ -63,28 +80,28 @@
 <p>moraimasu — almak</p>
 <p>tsukaimasu — kullanmak</p>
 <p>shimasu — yapmak</p>
-<h4>Time</h4>
+<h4 id="l1-time">Time</h4>
 <p>kyou — bugün</p>
 <p>kinou — dün</p>
 <p>ashita — yarın</p>
-<h4>People</h4>
+<h4 id="l1-people">People</h4>
 <p>watashi — ben</p>
 <p>anata — sen</p>
 <p>kare — o (erkek)</p>
 <p>kanojo — o (kadın)</p>
 <p>-tachi — çoğul, insanlar için</p>
 <p>watashitachi = biz</p>
-<h4>Place / school</h4>
+<h4 id="l1-place-school">Place / school</h4>
 <p class="jp">nihon — Japonya</p>
 <p class="tr">toruko — Türkiye</p>
 <p>gakkou — okul</p>
 <p>gakusei — öğrenci</p>
-<h4>Things</h4>
+<h4 id="l1-things">Things</h4>
 <p>pen — kalem</p>
 <p>no-to — not defteri</p>
 <p>shukudai — ödev</p>
-<h3>Grammar</h3>
-<h4>-masu</h4>
+<h3 id="l1-grammar">Grammar</h3>
+<h4 id="l1-masu">-masu</h4>
 <p>Kibar geniş zaman + gelecek.</p>
 <p>Her kişi için aynı çekim.</p>
 <p>watashi / anata / kare → hepsi ikimasu</p>
@@ -92,14 +109,14 @@
 <p class="tr">ben okula gideceğim</p>
 <p class="jp">pen wo tsukaimasu</p>
 <p class="tr">kalemi kullanırım / kullanacağım</p>
-<h4>wa — topic</h4>
+<h4 id="l1-wa-topic">wa — topic</h4>
 <p>Cümlenin ne hakkında olduğunu işaretler.</p>
 <p>Sınıfta “am / is / are” gibi düşünülüyor.</p>
 <p class="jp">anata wa no-to wo moraimasu</p>
 <p class="tr">sen not defterini alacaksın</p>
 <p class="jp">watashitachi wa nihon wo moraimasu</p>
 <p class="tr">biz Japonya’yı alacağız</p>
-<h4>wo — object (belirtme: -ı / -i)</h4>
+<h4 id="l1-wo-object-belirtme-i">wo — object (belirtme: -ı / -i)</h4>
 <p>Fiilin neyi yaptığını işaretler.</p>
 <p>Okunuşu o.</p>
 <p>pen wo — kalemi</p>
@@ -107,7 +124,7 @@
 <p class="tr">kalemi kullanırım</p>
 <p class="jp">ashita no-to wo agemasu</p>
 <p class="tr">yarın defteri vereceğim</p>
-<h4>ni — direction / target (-e / -a)</h4>
+<h4 id="l1-ni-direction-target-e-a">ni — direction / target (-e / -a)</h4>
 <p>Yön, hedef, “kime”.</p>
 <p>Daha genel.</p>
 <p class="jp">watashi wa gakkou ni ikimasu</p>
@@ -116,18 +133,18 @@
 <p class="tr">siz bana ödevi vereceksiniz</p>
 <p class="jp">gakuseitachi wa kanojotachi ni pen wo agemasu</p>
 <p class="tr">öğrenciler onlara kalemi verecek</p>
-<h4>he — physical direction</h4>
+<h4 id="l1-he-physical-direction">he — physical direction</h4>
 <p>Okunuşu: e</p>
 <p>Fiziksel mekana yön.</p>
 <p>ni ile aynı cümle kurulabilir, vurgu mekana gider.</p>
 <p class="jp">watashi wa gakkou he ikimasu</p>
 <p class="tr">ben okula gideceğim</p>
-<h4>Pronouns + -tachi</h4>
+<h4 id="l1-pronouns-tachi">Pronouns + -tachi</h4>
 <p>watashi → watashitachi (biz)</p>
 <p>anata → anatatachi (siz)</p>
 <p>gakusei → gakuseitachi (öğrenciler)</p>
 <p>kanojo → kanojotachi (onlar)</p>
-<h3>Example sentences</h3>
+<h3 id="l1-example-sentences">Example sentences</h3>
 <p class="jp">pen wo tsukaimasu</p>
 <p class="tr">kalemi kullanırım</p>
 <p class="jp">ashita no-to wo agemasu</p>
@@ -138,8 +155,8 @@
 <p class="tr">ben okula gideceğim</p>
 <p class="jp">anatatachi wa watashi ni shukudai wo agemasu</p>
 <p class="tr">siz bana ödevi vereceksiniz</p>
-<h3>From class</h3>
-<h4>Okunuşlar</h4>
+<h3 id="l1-from-class">From class</h3>
+<h4 id="l1-okunu-lar">Okunuşlar</h4>
 <p class="jp">ja = ca</p>
 <p class="tr">sh = ş</p>
 <p>ch = ç</p>
@@ -151,7 +168,7 @@
 <article id="l2">
 <h2>#2 - 19 Agustos - desu, kore/sore/are, particles</h2>
 <p class="sum">desu, işaret sözcükleri, sahiplik, yer/araç, soru, from–to.</p>
-<h3>Topics this lesson</h3>
+<h3 id="l2-topics-this-lesson">Topics this lesson</h3>
 <ul>
 <li>desu — kibar “dir”</li>
 <li>kore / sore / are vs kono / sono / ano</li>
@@ -165,8 +182,8 @@
 <li>Greetings</li>
 <li>Language suffix -go</li>
 </ul>
-<h3>Vocabulary</h3>
-<h4>This / that</h4>
+<h3 id="l2-vocabulary">Vocabulary</h3>
+<h4 id="l2-this-that">This / that</h4>
 <p>kore — bu (this)</p>
 <p>sore — o (that, near you)</p>
 <p>are — şu (that over there)</p>
@@ -176,23 +193,23 @@
 <p>koko — burası</p>
 <p>soko — orası</p>
 <p>asoko — şurası</p>
-<h4>People</h4>
+<h4 id="l2-people">People</h4>
 <p>hito — kişi / person</p>
 <p class="jp">minna — herkes</p>
 <p class="tr">kare — o (erkek)</p>
 <p>kanojo — o (kadın)</p>
 <p>gakusei — öğrenci</p>
-<h4>Greetings</h4>
+<h4 id="l2-greetings">Greetings</h4>
 <p>ohayou (gozaimasu) — günaydın</p>
 <p class="jp">konnichiwa — merhaba</p>
 <p class="tr">konbanwa — iyi akşamlar</p>
 <p>oyasumi (nasai) — iyi geceler</p>
-<h4>Time — parts of the day</h4>
+<h4 id="l2-time-parts-of-the-day">Time — parts of the day</h4>
 <p class="jp">asa — sabah</p>
 <p class="tr">hiru — öğlen</p>
 <p>ban — akşam</p>
 <p>yoru — gece</p>
-<h4>Time — week / year</h4>
+<h4 id="l2-time-week-year">Time — week / year</h4>
 <p>senshuu — geçen hafta</p>
 <p>konshuu — bu hafta</p>
 <p>raishuu — gelecek hafta</p>
@@ -205,11 +222,11 @@
 <p class="jp">natsu — yaz</p>
 <p class="tr">-ji — saat (o’clock)</p>
 <p>jikan — saat / zaman</p>
-<h4>Connectors</h4>
+<h4 id="l2-connectors">Connectors</h4>
 <p>demo — fakat</p>
 <p>shikashi — fakat</p>
 <p>soshite — and then / sonrasında</p>
-<h4>Language / place / things</h4>
+<h4 id="l2-language-place-things">Language / place / things</h4>
 <p class="jp">-go — dil eki (-ce / -ca)</p>
 <p class="tr">torukogo — Türkçe</p>
 <p>nihongo — Japonca</p>
@@ -218,18 +235,18 @@
 <p>basu — otobüs</p>
 <p>kuruma — araba</p>
 <p>ii — iyi</p>
-<h4>Verbs (new)</h4>
+<h4 id="l2-verbs-new">Verbs (new)</h4>
 <p class="jp">yarimasu = shimasu — yapmak</p>
 <p class="tr">iimasu — söylemek / demek</p>
-<h4>Particles</h4>
+<h4 id="l2-particles">Particles</h4>
 <p class="jp">no — …nin (possession / of)</p>
 <p class="tr">de — -de / -da, ile (yer veya araç)</p>
 <p>to — ile / ve / diye</p>
 <p>ka — mi? (soru)</p>
 <p>kara — …den (from)</p>
 <p>made — …e kadar (until)</p>
-<h3>Grammar</h3>
-<h4>desu — kibar “dir”</h4>
+<h3 id="l2-grammar">Grammar</h3>
+<h4 id="l2-desu-kibar-dir">desu — kibar “dir”</h4>
 <p>Cümleyi kibarlaştırır. “X, Y’dir.”</p>
 <p>Pattern:</p>
 <p>X wa Y desu</p>
@@ -237,7 +254,7 @@
 <p class="tr">bu kalemdir</p>
 <p class="jp">kore wa Ahmet desu</p>
 <p class="tr">bu Ahmet’tir</p>
-<h4>kore / sore / are</h4>
+<h4 id="l2-kore-sore-are">kore / sore / are</h4>
 <p>Tek başlarına dururlar. Yanlarına noun gelmez.</p>
 <p>kore — bu (konuşana yakın)</p>
 <p>sore — o (dinleyene yakın)</p>
@@ -248,7 +265,7 @@
 <p class="tr">o öğrencidir</p>
 <p class="jp">are wa gakusei desu</p>
 <p class="tr">şu öğrencidir</p>
-<h4>kono / sono / ano</h4>
+<h4 id="l2-kono-sono-ano">kono / sono / ano</h4>
 <p>Sıfata dönünce kullanılır. Yanına noun gelir.</p>
 <p>kono — bu + X</p>
 <p>sono — o + X</p>
@@ -262,7 +279,7 @@
 <p class="jp">Watch out:</p>
 <p class="tr">kore wa Ahmet desu — bu Ahmet’tir</p>
 <p>kono hito wa Ahmet desu — bu kişi Ahmet’tir</p>
-<h4>koko / soko / asoko</h4>
+<h4 id="l2-koko-soko-asoko">koko / soko / asoko</h4>
 <p>Yer gösterir.</p>
 <p>koko — burası</p>
 <p>soko — orası</p>
@@ -273,7 +290,7 @@
 <p class="tr">oradaki dükkan</p>
 <p class="jp">asoko no mise</p>
 <p class="tr">şuradaki mekan</p>
-<h4>no — possession (…nin / of)</h4>
+<h4 id="l2-no-possession-nin-of">no — possession (…nin / of)</h4>
 <p>Pattern:</p>
 <p>X no Y — X’in Y’si</p>
 <p class="jp">kore wa watashi no pen desu</p>
@@ -288,7 +305,7 @@
 <p class="tr">bugünün gecesi senin gecendir</p>
 <p class="jp">kanojo wa soko no mise ni ikimasu</p>
 <p class="tr">o, oradaki dükkana gidecek</p>
-<h4>no toki / -ji / jikan</h4>
+<h4 id="l2-no-toki-ji-jikan">no toki / -ji / jikan</h4>
 <p>no toki — …nin zamanında / when</p>
 <p>natsu no toki — yazın</p>
 <p>-ji — saat (o’clock)</p>
@@ -296,7 +313,7 @@
 <p>jikan — saat / zaman</p>
 <p>jikan wa 5 ji desu</p>
 <p>saat 5’tir / the time is five o’clock</p>
-<h4>de — location or means</h4>
+<h4 id="l2-de-location-or-means">de — location or means</h4>
 <p>İki iş:</p>
 <p class="jp">1. bulunma: -de / -da</p>
 <p class="tr">2. araç: ile</p>
@@ -312,7 +329,7 @@
 <p class="jp">watashi wa kuruma de pen de kakimasu</p>
 <p class="tr">arabayla, kalemle yazarım</p>
 <p>(iki de: araç + alet)</p>
-<h4>to — and / with / “diye”</h4>
+<h4 id="l2-to-and-with-diye">to — and / with / “diye”</h4>
 <p>Üç iş:</p>
 <p>1. ve / ile (grup)</p>
 <p class="jp">2. birlikte</p>
@@ -332,7 +349,7 @@
 <p class="tr">“o otobüsle gider” diye söyler</p>
 <p class="jp">Simon to Ilgin to iimasu</p>
 <p class="tr">Simon ile Ilgin diyecek / adımız Simon ve Ilgin</p>
-<h4>ka — question (mi?)</h4>
+<h4 id="l2-ka-question-mi">ka — question (mi?)</h4>
 <p>Cümlenin sonuna eklenir. Soru yapar.</p>
 <p class="jp">kore wa nan desu ka</p>
 <p class="tr">bu nedir?</p>
@@ -342,7 +359,7 @@
 <p>nereye gideceksin?</p>
 <p class="jp">kare wa gakkou ni ikimasu ka</p>
 <p class="tr">o okula gidecek mi?</p>
-<h4>kara … made — from … until</h4>
+<h4 id="l2-kara-made-from-until">kara … made — from … until</h4>
 <p>kara — …den (from)</p>
 <p>made — …e kadar (until)</p>
 <p class="jp">Istanbul kara Ankara made 101 km desu</p>
@@ -353,11 +370,11 @@
 <p class="tr">saat 5’e kadar yapacağım</p>
 <p class="jp">asa kara ban made yarimasu</p>
 <p class="tr">sabahtan akşama kadar yapacağım</p>
-<h4>-go — language suffix</h4>
+<h4 id="l2-go-language-suffix">-go — language suffix</h4>
 <p>Dil adı yapar. Türkçedeki -ce / -ca.</p>
 <p>torukogo — Türkçe</p>
 <p>nihongo — Japonca</p>
-<h3>Example sentences</h3>
+<h3 id="l2-example-sentences">Example sentences</h3>
 <p class="jp">kore wa pen desu</p>
 <p class="tr">bu kalemdir</p>
 <p class="jp">kono pen wa ii pen desu</p>
@@ -380,7 +397,7 @@
 <p class="tr">bu nedir?</p>
 <p class="jp">asa kara ban made yarimasu</p>
 <p class="tr">sabahtan akşama kadar yapacağım</p>
-<h3>From class</h3>
+<h3 id="l2-from-class">From class</h3>
 <p>kore tek başına, kono + noun.</p>
 <p>kore wa pen desu</p>
 <p>kono pen wa ii pen desu</p>
@@ -394,7 +411,7 @@
 <article id="l3">
 <h2>#3 - 24 Agustos - suki/kirai, ga, imasu/arimasu</h2>
 <p class="sum">ga, suki/kirai/hoshii, soru sözcükleri, imasu/arimasu.</p>
-<h3>Topics this lesson</h3>
+<h3 id="l3-topics-this-lesson">Topics this lesson</h3>
 <ul>
 <li>suki / kirai / hoshii — sıfat + ga</li>
 <li>wakarimasu + ga vs shirimasu / manabimasu + wo</li>
@@ -405,13 +422,13 @@
 <li>masen — olumsuz</li>
 <li>imasu / arimasu + ni (var olmak)</li>
 </ul>
-<h3>Vocabulary</h3>
-<h4>Adjectives</h4>
+<h3 id="l3-vocabulary">Vocabulary</h3>
+<h4 id="l3-adjectives">Adjectives</h4>
 <p>suki — sevmek (sıfat)</p>
 <p>kirai — nefret etmek (sıfat)</p>
 <p>hoshii — istemek (sıfat)</p>
 <p>dai suki — çok sevmek</p>
-<h4>Verbs</h4>
+<h4 id="l3-verbs">Verbs</h4>
 <p>wakarimasu — anlamak (+ ga)</p>
 <p>shirimasu — bilmek (+ wo)</p>
 <p class="jp">olumlu: shitteimasu / olumsuz: shirimasen</p>
@@ -421,7 +438,7 @@
 <p>imasu — var olmak (canlı)</p>
 <p>arimasu — var olmak (cansız)</p>
 <p>moushimasu — …diye söylerler (adımı …dir)</p>
-<h4>Question words</h4>
+<h4 id="l3-question-words">Question words</h4>
 <p>nani — ne</p>
 <p>dare — kim</p>
 <p>donata — kim (kibar)</p>
@@ -430,24 +447,24 @@
 <p>naze — neden</p>
 <p>dou — nasıl</p>
 <p>dou yatte — ne şekilde (arkasından fiil gelince)</p>
-<h4>People / things</h4>
+<h4 id="l3-people-things">People / things</h4>
 <p>sensei — öğretmen</p>
 <p>sushi — suşi</p>
 <p class="jp">ginkou — banka</p>
 <p class="tr">hajimemashite — memnun oldum / selamlar (tanışırken)</p>
-<h4>Particles</h4>
+<h4 id="l3-particles">Particles</h4>
 <p>ga — vurgu; suki / kirai / hoshii / wakarimasu / imasu / arimasu ile</p>
 <p class="jp">wo — object (shirimasu, manabimasu, benkyou shimasu)</p>
 <p class="tr">ni — yönelme; imasu/arimasu ile yer</p>
-<h3>Grammar</h3>
-<h4>ga vs wa</h4>
+<h3 id="l3-grammar">Grammar</h3>
+<h4 id="l3-ga-vs-wa">ga vs wa</h4>
 <p>wa’ya benzer, ama özel kullanımları var.</p>
 <p>Bu örneklerde ga vurgu verir:</p>
 <p>watashi wa sensei desu</p>
 <p>= watashi ga sensei desu</p>
 <p>kore wa pen desu</p>
 <p>= kore ga pen desu</p>
-<h4>suki / kirai / hoshii / wakarimasu + ga</h4>
+<h4 id="l3-suki-kirai-hoshii-wakarimasu-ga">suki / kirai / hoshii / wakarimasu + ga</h4>
 <p>suki, kirai, hoshii sıfattır. wakarimasu anlamaktır.</p>
 <p>Hepsi ile ga kullanılır. Türkçe mantığı işlemez: wo / kara yok.</p>
 <p>Pattern:</p>
@@ -460,15 +477,15 @@
 <p class="tr">sen Japonca’yı anlıyor musun?</p>
 <p class="jp">anata wa ginkou ga hoshii desu ka</p>
 <p class="tr">sen banka istiyor musun?</p>
-<h4>shirimasu / manabimasu / benkyou shimasu + wo</h4>
+<h4 id="l3-shirimasu-manabimasu-benkyou-shimasu-wo">shirimasu / manabimasu / benkyou shimasu + wo</h4>
 <p>shirimasu — bilmek. Olumlu çoğu zaman shitteimasu, olumsuz shirimasen.</p>
 <p>manabimasu — öğrenmek (+ wo)</p>
 <p>benkyou shimasu — ders çalışmak (+ wo)</p>
-<h4>kaerimasu + ni</h4>
+<h4 id="l3-kaerimasu-ni">kaerimasu + ni</h4>
 <p>Dönmek. Kendi evin için çoğunlukla bu kelime.</p>
 <p class="jp">ie ni dou yatte kaerimasu ka</p>
 <p class="tr">eve nasıl / ne şekilde gideceksin?</p>
-<h4>Question words</h4>
+<h4 id="l3-question-words-2">Question words</h4>
 <p>nani — ne</p>
 <p>dare / donata — kim (donata = kibar)</p>
 <p>itsu — ne zaman</p>
@@ -479,14 +496,14 @@
 <p>Arkasından fiil geliyorsa dou yatte.</p>
 <p class="jp">ie ni dou yatte kaerimasu ka</p>
 <p class="tr">eve nasıl gideceksin?</p>
-<h4>…to moushimasu</h4>
+<h4 id="l3-to-moushimasu">…to moushimasu</h4>
 <p>“…diye söylerler bana” = adım …dir.</p>
 <p>hajimemashite! Nakamura to moushimasu</p>
 <p>selamlar, ismim Nakamura</p>
-<h4>-masen</h4>
+<h4 id="l3-masen">-masen</h4>
 <p>Olumsuz: -masu → -masen</p>
 <p>ikimasu → ikimasen</p>
-<h4>imasu / arimasu + ni</h4>
+<h4 id="l3-imasu-arimasu-ni">imasu / arimasu + ni</h4>
 <p>ni yönelme ekidir (taksim’e, İstanbul’a, bana, sana…).</p>
 <p>Ama imasu / arimasu ile yer gösterir: “…de vardır”.</p>
 <p>imasu — canlı</p>
@@ -498,7 +515,7 @@
 <p class="tr">İstanbul’da kalem vardır</p>
 <p class="jp">sensei ga Istanbul ni imasu</p>
 <p class="tr">öğretmen İstanbul’dadır</p>
-<h3>Example sentences</h3>
+<h3 id="l3-example-sentences">Example sentences</h3>
 <p class="jp">watashi wa sushi ga suki desu</p>
 <p class="tr">suşi severim</p>
 <p>karetachi wa gakkou ga kirai desu</p>
@@ -515,7 +532,7 @@
 <p class="tr">kalem İstanbul’dadır</p>
 <p class="jp">sensei ga Istanbul ni imasu</p>
 <p class="tr">öğretmen İstanbul’dadır</p>
-<h3>From class</h3>
+<h3 id="l3-from-class">From class</h3>
 <p>suki / kirai kullanıyorsan ga. Nokta.</p>
 <p>Türkçe “suşi(yi)” → wo gibi durur; Japoncada wo değil, ga.</p>
 <p>Türkçe “okuldan nefret” → kara gibi durur; Japoncada yine ga.</p>
@@ -529,7 +546,7 @@
 <article id="l4">
 <h2>#4 - 28 Agustos - ja arimasen, to iimashita</h2>
 <p class="sum">Olumsuz desu (ja / de wa arimasen), alıntı (to iimashita), dou yatte, hai/iie.</p>
-<h3>Topics this lesson</h3>
+<h3 id="l4-topics-this-lesson">Topics this lesson</h3>
 <ul>
 <li>dou yatte + fiil — nasıl / ne şekilde</li>
 <li>mashita — geçmiş (-masu → -mashita)</li>
@@ -539,29 +556,29 @@
 <li>demo / shikashi — ama</li>
 <li>hai / iie</li>
 </ul>
-<h3>Vocabulary</h3>
-<h4>Verbs</h4>
+<h3 id="l4-vocabulary">Vocabulary</h3>
+<h4 id="l4-verbs">Verbs</h4>
 <p>kakimasu — yazmak</p>
 <p>yomimasu — okumak</p>
 <p>iimasu — söylemek / demek</p>
 <p>iimashita — söyledi (-masu → -mashita)</p>
-<h4>Things</h4>
+<h4 id="l4-things">Things</h4>
 <p>hon — kitap</p>
-<h4>Greetings</h4>
+<h4 id="l4-greetings">Greetings</h4>
 <p class="jp">hai — evet</p>
 <p class="tr">iie — hayır</p>
 <p>iya — hayır (daha günlük)</p>
-<h4>Question words</h4>
+<h4 id="l4-question-words">Question words</h4>
 <p>dou yatte — ne şekilde (arkasından fiil gelince)</p>
-<h4>Connectors</h4>
+<h4 id="l4-connectors">Connectors</h4>
 <p>demo — fakat</p>
 <p>shikashi — fakat</p>
-<h4>Particles</h4>
+<h4 id="l4-particles">Particles</h4>
 <p class="jp">wo — object (belirtme)</p>
 <p class="tr">to — diye (söz aktarma)</p>
 <p>wa — topic</p>
-<h3>Grammar</h3>
-<h4>dou yatte + fiil</h4>
+<h3 id="l4-grammar">Grammar</h3>
+<h4 id="l4-dou-yatte-fiil">dou yatte + fiil</h4>
 <p>Nasıl / ne şekilde. Arkasından fiil gelir.</p>
 <p>Pattern:</p>
 <p>… wo dou yatte VERB ka</p>
@@ -569,11 +586,11 @@
 <p class="tr">onu nasıl yazacaksın</p>
 <p class="jp">anata wa sore wo dou yatte kakimasu ka</p>
 <p class="tr">sen onu nasıl yazacaksın</p>
-<h4>-mashita — geçmiş</h4>
+<h4 id="l4-mashita-ge-mi">-mashita — geçmiş</h4>
 <p>Kibar geçmiş: -masu → -mashita</p>
 <p class="jp">iimasu → iimashita</p>
 <p class="tr">söyler → söyledi</p>
-<h4>to iimashita — “…diye söyledi”</h4>
+<h4 id="l4-to-iimashita-diye-s-yledi">to iimashita — “…diye söyledi”</h4>
 <p>Söz aktarma. Alıntının ardından to iimashita.</p>
 <p>Soru: to iimashita ka</p>
 <p>Pattern:</p>
@@ -582,13 +599,13 @@
 <p class="tr">o, onu nasıl okursun diye söyledi</p>
 <p class="jp">kanojo wa “anata wa sore wo dou yatte yomimasu ka” to iimashita ka</p>
 <p class="tr">o, “sen onu nasıl okuyacaksın” diye söyledi mi?</p>
-<h4>kore wa … desu</h4>
+<h4 id="l4-kore-wa-desu">kore wa … desu</h4>
 <p>Bu …dir.</p>
 <p>Pattern:</p>
 <p>kore wa … desu</p>
 <p class="jp">kare wa gakusei desu</p>
 <p class="tr">o (erkek) öğrencidir</p>
-<h4>de wa arimasen / ja arimasen — değildir</h4>
+<h4 id="l4-de-wa-arimasen-ja-arimasen-de-ildir">de wa arimasen / ja arimasen — değildir</h4>
 <p>ja = de wa</p>
 <p>Olumlu: X wa Y desu</p>
 <p>Olumsuz: X wa Y de wa arimasen</p>
@@ -605,14 +622,14 @@
 <p class="tr">bu öğrencidir ama öğretmen değildir</p>
 <p class="jp">kore wa hon desu shikashi kuruma de wa arimasen</p>
 <p class="tr">bu kitaptır ama araba değildir</p>
-<h4>demo / shikashi</h4>
+<h4 id="l4-demo-shikashi">demo / shikashi</h4>
 <p>İkisi de “ama / fakat”.</p>
 <p>İki cümleyi karşılaştırır: A desu, ama B değildir.</p>
-<h4>hai / iie</h4>
+<h4 id="l4-hai-iie">hai / iie</h4>
 <p class="jp">hai — evet</p>
 <p class="tr">iie — hayır</p>
 <p>iya — hayır (daha günlük)</p>
-<h3>Example sentences</h3>
+<h3 id="l4-example-sentences">Example sentences</h3>
 <p class="jp">sore wo dou yatte kakimasu ka</p>
 <p class="tr">onu nasıl yazacaksın</p>
 <p class="jp">anata wa sore wo dou yatte kakimasu ka</p>
@@ -629,7 +646,7 @@
 <p class="tr">bu kitaptır ama araba değildir</p>
 <p class="jp">iie, kono sensei wa sensei de wa arimasen</p>
 <p class="tr">hayır, bu öğretmen öğretmen değildir</p>
-<h3>From class</h3>
+<h3 id="l4-from-class">From class</h3>
 <p>ja = de wa. İkisi de aynı kapı: “değildir” yapısının kısa / uzun hali.</p>
 <p>Değildir, üç (aslında dört) yol:</p>
 <p class="jp">de wa arimasen — daha resmi kibar</p>
@@ -642,7 +659,7 @@
 <article id="l5">
 <h2>#5 - 30 Agustos - ga-words, shitteimasu ka, naze nara</h2>
 <p class="sum">ga ile kullanılan kelimeler, “…biliyor musun?”, naze nara, otsukaresama.</p>
-<h3>Topics this lesson</h3>
+<h3 id="l5-topics-this-lesson">Topics this lesson</h3>
 <ul>
 <li>otsukaresama — kolay gelsin</li>
 <li>ga-kelimeler: suki / kirai / hoshii / wakarimasu</li>
@@ -654,50 +671,50 @@
 <li>kimashita — geldi (-mashita)</li>
 <li>ii ne — iyi ya (internet)</li>
 </ul>
-<h3>Vocabulary</h3>
-<h4>Verbs</h4>
+<h3 id="l5-vocabulary">Vocabulary</h3>
+<h4 id="l5-verbs">Verbs</h4>
 <p>wakarimasu — anlamak (+ ga)</p>
 <p>wakarimasen — anlamamak</p>
 <p>shirimasu — bilmek (+ wo)</p>
 <p>olumlu: shitteimasu / olumsuz: shirimasen</p>
 <p>kimashita — geldi (kimasu → kimashita)</p>
-<h4>Adjectives</h4>
+<h4 id="l5-adjectives">Adjectives</h4>
 <p>suki — sevmek (sıfat)</p>
 <p>kirai — nefret etmek (sıfat)</p>
 <p>hoshii — istemek (sıfat)</p>
 <p>ii ne — iyi ya / beğenmek (internet)</p>
-<h4>People</h4>
+<h4 id="l5-people">People</h4>
 <p>ryuugakusei — uluslararası öğrenci</p>
 <p>torukojin — Türk (kişi)</p>
-<h4>Place</h4>
+<h4 id="l5-place">Place</h4>
 <p class="jp">tokyo — Tokyo</p>
 <p class="tr">istanbul — İstanbul</p>
-<h4>Things</h4>
+<h4 id="l5-things">Things</h4>
 <p class="jp">hon — kitap</p>
 <p class="tr">pakuchi — kişniş</p>
 <p>tabemono — yemek</p>
-<h4>Greetings</h4>
+<h4 id="l5-greetings">Greetings</h4>
 <p>otsukaresama — kolay gelsin</p>
-<h4>Question words</h4>
+<h4 id="l5-question-words">Question words</h4>
 <p>nanji — saat kaç</p>
 <p>naze — neden</p>
 <p>doko — nere</p>
 <p>dare — kim</p>
 <p>itsu kara — ne zamandan beri</p>
-<h4>Language</h4>
+<h4 id="l5-language">Language</h4>
 <p>eigo — İngilizce</p>
 <p class="jp">nihongo — Japonca</p>
 <p class="tr">torukogo — Türkçe</p>
-<h4>Connectors</h4>
+<h4 id="l5-connectors">Connectors</h4>
 <p>naze nara — çünkü (naze’nin cevabı)</p>
-<h4>Particles</h4>
+<h4 id="l5-particles">Particles</h4>
 <p>ga — suki / kirai / hoshii / wakarimasu ile</p>
 <p>no koto — kişi + suki (X no koto ga suki)</p>
 <p>to — ile / ve</p>
 <p>de — ile (araç) / -de (yer)</p>
 <p>kara — …den (from / since)</p>
-<h3>Grammar</h3>
-<h4>ga-kelimeler</h4>
+<h3 id="l5-grammar">Grammar</h3>
+<h4 id="l5-ga-kelimeler">ga-kelimeler</h4>
 <p>Şimdilik öğrendiklerimiz. Hepsi ile ga:</p>
 <p>suki — sevmek (sıfat)</p>
 <p>kirai — nefret etmek (sıfat)</p>
@@ -706,7 +723,7 @@
 <p>Pattern:</p>
 <p>X wa Y ga suki / kirai / hoshii desu</p>
 <p>X wa Y ga wakarimasu</p>
-<h4>… ka shitteimasu ka — biliyor musun?</h4>
+<h4 id="l5-ka-shitteimasu-ka-biliyor-musun">… ka shitteimasu ka — biliyor musun?</h4>
 <p>Önce soru cümlesi, sonra shitteimasu ka.</p>
 <p>Pattern:</p>
 <p>[soru] ka shitteimasu ka</p>
@@ -718,7 +735,7 @@
 <p class="tr">saat kaçta Tokyo’dan İstanbul’a gelecek, biliyor musun?</p>
 <p>anata wa dare wa kuruma de naze roku-ji ni kimashita ka shitteimasu ka</p>
 <p>kim arabayla neden saat 6’da geldi, biliyor musun?</p>
-<h4>suki</h4>
+<h4 id="l5-suki">suki</h4>
 <p class="jp">watashi wa sushi ga suki desu</p>
 <p class="tr">suşi severim</p>
 <p>anata wa hon ga suki desu</p>
@@ -728,9 +745,9 @@
 <p>Kişi sevince no koto:</p>
 <p>Simon wa itsu kara Ilgin no koto ga suki desu ka</p>
 <p>Simon ne zamandan beri Ilgin’i seviyor?</p>
-<h4>naze nara — çünkü</h4>
+<h4 id="l5-naze-nara-nk">naze nara — çünkü</h4>
 <p>naze’nin cevabı. “Çünkü…” diye başlar.</p>
-<h4>kirai</h4>
+<h4 id="l5-kirai">kirai</h4>
 <p>watashi wa gakkou ga kirai desu</p>
 <p>okuldan nefret ederim</p>
 <p class="jp">watashitachi wa ryuugakusei ga kirai desu</p>
@@ -739,7 +756,7 @@
 <p class="tr">neden Ilgin kişnişten nefret eder?</p>
 <p class="jp">torukojin wa itsu kara asa ga kirai desu ka</p>
 <p class="tr">Türkler ne zamandan beri sabahtan nefret eder?</p>
-<h4>hoshii</h4>
+<h4 id="l5-hoshii">hoshii</h4>
 <p>watashi wa no-to ga hoshii desu</p>
 <p>not defteri isterim</p>
 <p class="jp">naze karetachi wa kuruma to basu ga hoshii desu ka</p>
@@ -748,7 +765,7 @@
 <p class="tr">ne zaman siz suşi istersiniz?</p>
 <p class="jp">naze anatatachi wa tabemono ga hoshii desu ka</p>
 <p class="tr">niçin (şu an) yemek istersiniz?</p>
-<h4>wakarimasu / wakarimasen</h4>
+<h4 id="l5-wakarimasu-wakarimasen">wakarimasu / wakarimasen</h4>
 <p>Olumsuz: wakarimasu → wakarimasen</p>
 <p>Nesne yine ga.</p>
 <p class="jp">watashi wa nihongo ga wakarimasen</p>
@@ -759,7 +776,7 @@
 <p class="tr">sen neden Japonca anlamazsın?</p>
 <p class="jp">kanojo wa sono torukogo ga wakarimasen</p>
 <p class="tr">o, o Türkçeyi anlamaz</p>
-<h3>Example sentences</h3>
+<h3 id="l5-example-sentences">Example sentences</h3>
 <p class="jp">sensei to gakusei wa doko ni ikimasu ka shitteimasu ka</p>
 <p class="tr">hoca ile öğrenci nereye gidecek, biliyor musun?</p>
 <p>naze gakkou de hon wo yomimasu ka shitteimasu ka</p>
@@ -780,13 +797,28 @@
 <p class="tr">ben Japonca anlamıyorum</p>
 <p class="jp">watashi wa eigo ga wakarimasen</p>
 <p class="tr">ben İngilizce anlamıyorum</p>
-<h3>From class</h3>
+<h3 id="l5-from-class">From class</h3>
 <p>otsukaresama — kolay gelsin</p>
 <p>Ga-kelimeler (ga ile kullanılanlar): suki, kirai, hoshii, wakarimasu.</p>
 <p>Birini seviyorsan X no koto ga suki.</p>
 <p>naze nara = naze’nin cevabı (çünkü).</p>
 <p>ii ne — Instagram’daki beğenmek gibi. “İyiymiş ya / iyi ya.” İnternet dili.</p>
 </article>
+  </div>
 </div>
+<script>
+const links = [...document.querySelectorAll("#outline a")];
+const ids = links.map(a => a.getAttribute("href").slice(1));
+const els = ids.map(id => document.getElementById(id)).filter(Boolean);
+function setOn() {
+  let cur = ids[0];
+  for (const el of els) {
+    if (el.getBoundingClientRect().top <= 72) cur = el.id;
+  }
+  links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + cur));
+}
+window.addEventListener("scroll", setOn, {passive:true});
+setOn();
+</script>
 </body>
 </html>
