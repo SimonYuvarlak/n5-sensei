@@ -101,7 +101,7 @@ function render(){
   const c = current();
   if (!c){
     $("meta").textContent = cat;
-    $("word").textContent = "Bu sette bitti.";
+    $("word").textContent = "Bu set bitti.";
     $("hint").textContent = "Reset veya başka kategori.";
     return;
   }
@@ -111,11 +111,11 @@ function render(){
 }
 $("card").onclick = () => { if(current()){ flipped=!flipped; render(); } };
 $("knew").onclick = () => {
-  const c=current(); if(!c||!flipped) return;
+  const c=current(); if(!c) return;
   state.known.push(c.front+"|"+c.tag); save(); queue.shift(); flipped=false; render();
 };
 $("again").onclick = () => {
-  const c=current(); if(!c||!flipped) return;
+  const c=current(); if(!c) return;
   queue.push(queue.shift()); flipped=false; render();
 };
 $("cats").onclick = e => { const b=e.target.closest("button"); if(!b) return; cat=b.dataset.c; rebuild(); };
@@ -124,7 +124,6 @@ $("shuffle").onclick = () => rebuild(true);
 $("reset").onclick = () => { if(confirm("İlerlemeyi sil?")){ state.known=[]; save(); rebuild(); } };
 document.addEventListener("keydown", e => {
   if(e.key===" "){ e.preventDefault(); if(current()){ flipped=!flipped; render(); } }
-  if(!flipped) return;
   if(e.key==="ArrowRight"||e.key==="2") $("knew").click();
   if(e.key==="ArrowLeft"||e.key==="1") $("again").click();
 });
