@@ -3,31 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&display=swap" rel="stylesheet">
 <title>SUKISEN</title>
 <style>
   :root { --paper:#f4efe6; --ink:#1c1814; --mute:#6e665c; --line:#ddd4c6; --accent:#9c3b2e; --card:#fffaf2; }
   * { box-sizing: border-box; }
-  body { margin:0; min-height:100vh; background:var(--paper); color:var(--ink); font-family: "Iowan Old Style", Palatino, "Times New Roman", serif; }
-  .wrap { max-width: 42rem; margin: 0 auto; padding: 1.5rem 1.1rem 3rem; }
+  html { font-size: 19px; }
+  body { margin:0; min-height:100vh; background:var(--paper); color:var(--ink); font-family: "Newsreader", Georgia, "Iowan Old Style", "Times New Roman", serif; font-optical-sizing: auto; font-size: 1.05rem; line-height: 1.5; }
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 1.6rem 1.2rem 3rem; }
   header { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom:1.4rem; }
-  h1 { font-size:1.35rem; font-weight:600; letter-spacing:.02em; margin:0; }
-  .sub { color:var(--mute); font-size:.85rem; }
+  h1 { font-size:1.85rem; font-weight:600; letter-spacing:.01em; margin:0; }
+  .sub { color:var(--mute); font-size:1rem; }
   .cats { display:flex; flex-wrap:wrap; gap:.45rem; margin-bottom:1.2rem; }
-  .cats button, .tools button { border:1px solid var(--line); background:transparent; color:var(--ink); padding:.35rem .7rem; border-radius:999px; font: inherit; font-size:.8rem; cursor:pointer; }
+  .cats button, .tools button { border:1px solid var(--line); background:transparent; color:var(--ink); padding:.4rem .8rem; border-radius:999px; font: inherit; font-size:.92rem; cursor:pointer; }
   .cats button.on, .tools button.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:1.1rem; min-height:15rem; padding:1.6rem 1.4rem; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; cursor:pointer; box-shadow: 0 10px 30px rgba(28,24,20,.06); }
-  .meta { color:var(--mute); font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; margin-bottom:.8rem; }
-  .word { font-size: clamp(1.8rem, 6vw, 2.7rem); line-height:1.2; }
-  .hint { margin-top:1.1rem; color:var(--mute); font-size:.8rem; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:1.1rem; min-height:17rem; padding:1.8rem 1.5rem; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; cursor:pointer; box-shadow: 0 10px 30px rgba(28,24,20,.06); }
+  .meta { color:var(--mute); font-size:.88rem; letter-spacing:.08em; text-transform:uppercase; margin-bottom:.8rem; }
+  .word { font-size: clamp(2.3rem, 7vw, 3.4rem); line-height:1.2; }
+  .hint { margin-top:1.1rem; color:var(--mute); font-size:.95rem; }
   .grade { display:flex; gap:.7rem; margin-top:1rem; }
-  .grade button { flex:1; padding:.8rem; border-radius:.7rem; border:1px solid var(--line); background:var(--card); font:inherit; cursor:pointer; }
+  .grade button { flex:1; padding:.9rem; border-radius:.7rem; border:1px solid var(--line); background:var(--card); font:inherit; font-size:1.05rem; cursor:pointer; }
   .grade .knew { background:var(--ink); color:var(--paper); border-color:var(--ink); }
   .tools { display:flex; gap:.45rem; flex-wrap:wrap; margin:1rem 0; }
   .bar { height:4px; background:var(--line); border-radius:99px; overflow:hidden; margin: .6rem 0 1rem; }
   .bar > span { display:block; height:100%; background:var(--accent); width:0; }
-  .counts { color:var(--mute); font-size:.85rem; }
+  .counts { color:var(--mute); font-size:1rem; }
   .nav { display:flex; gap:.45rem; margin-bottom:1rem; }
-  .nav a { border:1px solid var(--line); color:var(--ink); text-decoration:none; padding:.35rem .7rem; border-radius:999px; font-size:.8rem; }
+  .nav a { border:1px solid var(--line); color:var(--ink); text-decoration:none; padding:.4rem .8rem; border-radius:999px; font-size:.92rem; }
   .nav a.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
 </style>
 </head>
