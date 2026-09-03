@@ -6,6 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
 <title>SUKISEN — Hiragana</title>
 <style>
 
@@ -37,6 +38,8 @@
   img.chart { max-width:100%; height:auto; display:block; margin:.8rem 0 1.2rem; border:1px solid var(--line); background:#fff; }
 
   .wrap { max-width: 72rem; }
+  .drill { max-width: 44rem; margin: 2.4rem auto 0; }
+  .drill .word { font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif; font-size: clamp(4.2rem, 16vw, 7.2rem); font-weight: 500; }
 </style>
 </head>
 <body>
@@ -49,10 +52,100 @@
   <header>
     <div>
       <h1>Hiragana</h1>
-      <div class="sub">Stroke order</div>
+      <div class="sub">Stroke order · 48 kart</div>
     </div>
   </header>
   <p><img class="chart" src="hiragana-strokes.png" alt="Hiragana stroke order"></p>
+  <div class="drill">
+    <header>
+      <div>
+        <h1>Kartlar</h1>
+        <div class="sub">Hiragana → rōmaji</div>
+      </div>
+      <div class="counts" id="counts"></div>
+    </header>
+    <div class="cats" id="cats"></div>
+    <div class="tools">
+      <button id="dir">あ → A</button>
+      <button id="shuffle">Karıştır</button>
+      <button id="reset">Sıfırla</button>
+    </div>
+    <div class="bar"><span id="bar"></span></div>
+    <div class="card" id="card" tabindex="0">
+      <div class="meta" id="meta"></div>
+      <div class="word" id="word"></div>
+      <div class="hint" id="hint">Çevirmek için dokun / Space</div>
+    </div>
+    <div class="grade">
+      <button id="again">Again</button>
+      <button class="knew" id="knew">Knew it</button>
+    </div>
+  </div>
 </div>
+<script>
+const CARDS = [{"front": "あ", "back": "a", "tag": "a"}, {"front": "い", "back": "i", "tag": "a"}, {"front": "う", "back": "u", "tag": "a"}, {"front": "え", "back": "e", "tag": "a"}, {"front": "お", "back": "o", "tag": "a"}, {"front": "か", "back": "ka", "tag": "k"}, {"front": "き", "back": "ki", "tag": "k"}, {"front": "く", "back": "ku", "tag": "k"}, {"front": "け", "back": "ke", "tag": "k"}, {"front": "こ", "back": "ko", "tag": "k"}, {"front": "さ", "back": "sa", "tag": "s"}, {"front": "し", "back": "shi", "tag": "s"}, {"front": "す", "back": "su", "tag": "s"}, {"front": "せ", "back": "se", "tag": "s"}, {"front": "そ", "back": "so", "tag": "s"}, {"front": "た", "back": "ta", "tag": "t"}, {"front": "ち", "back": "chi", "tag": "t"}, {"front": "つ", "back": "tsu", "tag": "t"}, {"front": "て", "back": "te", "tag": "t"}, {"front": "と", "back": "to", "tag": "t"}, {"front": "な", "back": "na", "tag": "n"}, {"front": "に", "back": "ni", "tag": "n"}, {"front": "ぬ", "back": "nu", "tag": "n"}, {"front": "ね", "back": "ne", "tag": "n"}, {"front": "の", "back": "no", "tag": "n"}, {"front": "は", "back": "ha", "tag": "h"}, {"front": "ひ", "back": "hi", "tag": "h"}, {"front": "ふ", "back": "fu", "tag": "h"}, {"front": "へ", "back": "he", "tag": "h"}, {"front": "ほ", "back": "ho", "tag": "h"}, {"front": "ま", "back": "ma", "tag": "m"}, {"front": "み", "back": "mi", "tag": "m"}, {"front": "む", "back": "mu", "tag": "m"}, {"front": "め", "back": "me", "tag": "m"}, {"front": "も", "back": "mo", "tag": "m"}, {"front": "や", "back": "ya", "tag": "y"}, {"front": "ゆ", "back": "yu", "tag": "y"}, {"front": "よ", "back": "yo", "tag": "y"}, {"front": "ら", "back": "ra", "tag": "r"}, {"front": "り", "back": "ri", "tag": "r"}, {"front": "る", "back": "ru", "tag": "r"}, {"front": "れ", "back": "re", "tag": "r"}, {"front": "ろ", "back": "ro", "tag": "r"}, {"front": "わ", "back": "wa", "tag": "w"}, {"front": "ゐ", "back": "wi", "tag": "w"}, {"front": "ゑ", "back": "we", "tag": "w"}, {"front": "を", "back": "wo", "tag": "w"}, {"front": "ん", "back": "n", "tag": "w"}];
+const KEY = "sukisen-hiragana";
+let cat = "All";
+let dir = "kana-ro";
+let flipped = false;
+let queue = [];
+const state = JSON.parse(localStorage.getItem(KEY) || '{"known":[]}');
+const cats = ["All", ...Array.from(new Set(CARDS.map(c => c.tag)))];
+const $ = id => document.getElementById(id);
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+function pool(){
+  return CARDS.filter(c => (cat==="All" || c.tag===cat) && !state.known.includes(c.front+"|"+c.tag));
+}
+function rebuild(shuffle=true){
+  queue = pool();
+  if (shuffle) queue.sort(() => Math.random()-0.5);
+  flipped = false;
+  render();
+}
+function renderCats(){
+  $("cats").innerHTML = cats.map(c => `<button data-c="${c}" class="${c===cat?'on':''}">${c}</button>`).join("");
+}
+function current(){ return queue[0]; }
+function prompt(c){ return dir==="kana-ro" ? c.front : c.back; }
+function answer(c){ return dir==="kana-ro" ? c.back : c.front; }
+function render(){
+  renderCats();
+  const total = (cat==="All"?CARDS:CARDS.filter(c=>c.tag===cat)).length;
+  const known = state.known.filter(k => cat==="All" || k.endsWith("|"+cat)).length;
+  $("counts").textContent = `${known} / ${total} known`;
+  $("bar").style.width = (total? (known/total*100):0) + "%";
+  $("dir").textContent = dir==="kana-ro" ? "あ → A" : "A → あ";
+  const c = current();
+  if (!c){
+    $("meta").textContent = cat;
+    $("word").textContent = "Bu set bitti.";
+    $("hint").textContent = "Reset veya başka kategori.";
+    return;
+  }
+  $("meta").textContent = (flipped ? (dir==="kana-ro"?"Rōmaji":"Hiragana") : (dir==="kana-ro"?"Hiragana":"Rōmaji")) + " · " + c.tag;
+  $("word").textContent = flipped ? answer(c) : prompt(c);
+  $("hint").textContent = flipped ? (dir==="kana-ro"?c.front:c.back) : "Çevirmek için dokun / Space";
+}
+$("card").onclick = () => { if(current()){ flipped=!flipped; render(); } };
+$("knew").onclick = () => {
+  const c=current(); if(!c) return;
+  state.known.push(c.front+"|"+c.tag); save(); queue.shift(); flipped=false; render();
+};
+$("again").onclick = () => {
+  const c=current(); if(!c) return;
+  queue.push(queue.shift()); flipped=false; render();
+};
+$("cats").onclick = e => { const b=e.target.closest("button"); if(!b) return; cat=b.dataset.c; rebuild(); };
+$("dir").onclick = () => { dir = dir==="kana-ro"?"ro-kana":"kana-ro"; flipped=false; render(); };
+$("shuffle").onclick = () => rebuild(true);
+$("reset").onclick = () => { if(confirm("İlerlemeyi sil?")){ state.known=[]; save(); rebuild(); } };
+document.addEventListener("keydown", e => {
+  if(e.target && e.target.closest && e.target.closest("textarea,input")) return;
+  if(e.key===" "){ e.preventDefault(); if(current()){ flipped=!flipped; render(); } }
+  if(e.key==="ArrowRight"||e.key==="2") $("knew").click();
+  if(e.key==="ArrowLeft"||e.key==="1") $("again").click();
+});
+rebuild();
+</script>
 </body>
 </html>
