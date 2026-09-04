@@ -36,9 +36,16 @@
   .nav a { border:1px solid var(--line); color:var(--ink); text-decoration:none; padding:.4rem .8rem; border-radius:999px; font-size:.92rem; }
   .nav a.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
   img.chart { max-width:100%; height:auto; display:block; margin:.8rem 0 1.2rem; border:1px solid var(--line); background:#fff; }
+  #search { width:100%; font:inherit; font-size:1rem; padding:.55rem .75rem; border:1px solid var(--line); border-radius:.6rem; background:var(--card); color:var(--ink); margin: .2rem 0 1rem; }
+  #vocab-list h3 { font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:1.15rem 0 .35rem; }
+  #vocab-list .row { display:flex; justify-content:space-between; gap:1rem; padding:.42rem 0; border-bottom:1px solid var(--line); }
+  #vocab-list .jp { font-weight:600; }
+  #vocab-list .tr { color:var(--mute); text-align:right; }
+  #vocab-list .row.known { opacity:.42; }
+  #vocab-list .empty { color:var(--mute); }
 
   .wrap { max-width: 72rem; }
-  .drill { max-width: 44rem; margin: 2.4rem auto 0; }
+  .drill { max-width: 44rem; margin: 0 auto 2.6rem; }
   .drill .word { font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif; font-size: clamp(4.2rem, 16vw, 7.2rem); font-weight: 500; }
 </style>
 </head>
@@ -52,18 +59,11 @@
   <header>
     <div>
       <h1>Hiragana</h1>
-      <div class="sub">Stroke order · 48 kart</div>
+      <div class="sub">48 kart · Hiragana → rōmaji</div>
     </div>
+    <div class="counts" id="counts"></div>
   </header>
-  <p><img class="chart" src="hiragana-strokes.png" alt="Hiragana stroke order"></p>
   <div class="drill">
-    <header>
-      <div>
-        <h1>Kartlar</h1>
-        <div class="sub">Hiragana → rōmaji</div>
-      </div>
-      <div class="counts" id="counts"></div>
-    </header>
     <div class="cats" id="cats"></div>
     <div class="tools">
       <button id="dir">あ → A</button>
@@ -81,6 +81,7 @@
       <button class="knew" id="knew">Knew it</button>
     </div>
   </div>
+  <p><img class="chart" src="hiragana-strokes.png" alt="Hiragana stroke order"></p>
 </div>
 <script>
 const CARDS = [{"front": "あ", "back": "a", "tag": "a"}, {"front": "い", "back": "i", "tag": "a"}, {"front": "う", "back": "u", "tag": "a"}, {"front": "え", "back": "e", "tag": "a"}, {"front": "お", "back": "o", "tag": "a"}, {"front": "か", "back": "ka", "tag": "k"}, {"front": "き", "back": "ki", "tag": "k"}, {"front": "く", "back": "ku", "tag": "k"}, {"front": "け", "back": "ke", "tag": "k"}, {"front": "こ", "back": "ko", "tag": "k"}, {"front": "さ", "back": "sa", "tag": "s"}, {"front": "し", "back": "shi", "tag": "s"}, {"front": "す", "back": "su", "tag": "s"}, {"front": "せ", "back": "se", "tag": "s"}, {"front": "そ", "back": "so", "tag": "s"}, {"front": "た", "back": "ta", "tag": "t"}, {"front": "ち", "back": "chi", "tag": "t"}, {"front": "つ", "back": "tsu", "tag": "t"}, {"front": "て", "back": "te", "tag": "t"}, {"front": "と", "back": "to", "tag": "t"}, {"front": "な", "back": "na", "tag": "n"}, {"front": "に", "back": "ni", "tag": "n"}, {"front": "ぬ", "back": "nu", "tag": "n"}, {"front": "ね", "back": "ne", "tag": "n"}, {"front": "の", "back": "no", "tag": "n"}, {"front": "は", "back": "ha", "tag": "h"}, {"front": "ひ", "back": "hi", "tag": "h"}, {"front": "ふ", "back": "fu", "tag": "h"}, {"front": "へ", "back": "he", "tag": "h"}, {"front": "ほ", "back": "ho", "tag": "h"}, {"front": "ま", "back": "ma", "tag": "m"}, {"front": "み", "back": "mi", "tag": "m"}, {"front": "む", "back": "mu", "tag": "m"}, {"front": "め", "back": "me", "tag": "m"}, {"front": "も", "back": "mo", "tag": "m"}, {"front": "や", "back": "ya", "tag": "y"}, {"front": "ゆ", "back": "yu", "tag": "y"}, {"front": "よ", "back": "yo", "tag": "y"}, {"front": "ら", "back": "ra", "tag": "r"}, {"front": "り", "back": "ri", "tag": "r"}, {"front": "る", "back": "ru", "tag": "r"}, {"front": "れ", "back": "re", "tag": "r"}, {"front": "ろ", "back": "ro", "tag": "r"}, {"front": "わ", "back": "wa", "tag": "w"}, {"front": "ゐ", "back": "wi", "tag": "w"}, {"front": "ゑ", "back": "we", "tag": "w"}, {"front": "を", "back": "wo", "tag": "w"}, {"front": "ん", "back": "n", "tag": "w"}];

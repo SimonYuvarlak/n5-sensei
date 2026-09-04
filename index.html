@@ -34,6 +34,13 @@
   .nav a { border:1px solid var(--line); color:var(--ink); text-decoration:none; padding:.4rem .8rem; border-radius:999px; font-size:.92rem; }
   .nav a.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
   img.chart { max-width:100%; height:auto; display:block; margin:.8rem 0 1.2rem; border:1px solid var(--line); background:#fff; }
+  #search { width:100%; font:inherit; font-size:1rem; padding:.55rem .75rem; border:1px solid var(--line); border-radius:.6rem; background:var(--card); color:var(--ink); margin: .2rem 0 1rem; }
+  #vocab-list h3 { font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:1.15rem 0 .35rem; }
+  #vocab-list .row { display:flex; justify-content:space-between; gap:1rem; padding:.42rem 0; border-bottom:1px solid var(--line); }
+  #vocab-list .jp { font-weight:600; }
+  #vocab-list .tr { color:var(--mute); text-align:right; }
+  #vocab-list .row.known { opacity:.42; }
+  #vocab-list .empty { color:var(--mute); }
 </style>
 </head>
 <body>
@@ -53,6 +60,7 @@
   <div class="cats" id="cats"></div>
   <div class="tools">
     <button id="dir">JP → TR</button>
+    <button id="mode">Liste</button>
     <button id="shuffle">Karıştır</button>
     <button id="reset">Sıfırla</button>
   </div>
@@ -65,6 +73,10 @@
   <div class="grade">
     <button id="again">Again</button>
     <button class="knew" id="knew">Knew it</button>
+  </div>
+  <div id="list-wrap" hidden>
+    <input id="search" type="search" placeholder="Kelime ara…" autocomplete="off">
+    <div id="vocab-list"></div>
   </div>
 </div>
 <script>
@@ -105,11 +117,13 @@ function render(){
     $("meta").textContent = cat;
     $("word").textContent = "Bu set bitti.";
     $("hint").textContent = "Reset veya başka kategori.";
+    syncMode();
     return;
   }
   $("meta").textContent = (flipped ? (dir==="jp-tr"?"Türkçe":"Rōmaji") : (dir==="jp-tr"?"Rōmaji":"Türkçe")) + " · " + c.tag;
   $("word").textContent = flipped ? answer(c) : prompt(c);
   $("hint").textContent = flipped ? (dir==="jp-tr"?c.front:c.back) : "Çevirmek için dokun / Space";
+  syncMode();
 }
 $("card").onclick = () => { if(current()){ flipped=!flipped; render(); } };
 $("knew").onclick = () => {
@@ -125,10 +139,45 @@ $("dir").onclick = () => { dir = dir==="jp-tr"?"tr-jp":"jp-tr"; flipped=false; r
 $("shuffle").onclick = () => rebuild(true);
 $("reset").onclick = () => { if(confirm("İlerlemeyi sil?")){ state.known=[]; save(); rebuild(); } };
 document.addEventListener("keydown", e => {
+  if(mode==="list") return;
   if(e.key===" "){ e.preventDefault(); if(current()){ flipped=!flipped; render(); } }
   if(e.key==="ArrowRight"||e.key==="2") $("knew").click();
   if(e.key==="ArrowLeft"||e.key==="1") $("again").click();
 });
+
+let mode = "cards";
+function escList(s){ return String(s||"").replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function renderList(){
+  const box = $("vocab-list");
+  if (!box) return;
+  const q = (($("search") && $("search").value) || "").trim().toLowerCase();
+  const items = CARDS.filter(c => (cat==="All" || c.tag===cat) && (!q || c.front.toLowerCase().includes(q) || c.back.toLowerCase().includes(q)));
+  let html = "";
+  let last = null;
+  for (const c of items) {
+    if (c.tag !== last) { html += `<h3>${escList(c.tag)}</h3>`; last = c.tag; }
+    const known = state.known.includes(c.front+"|"+c.tag);
+    html += `<div class="row${known?" known":""}"><span class="jp">${escList(c.front)}</span><span class="tr">${escList(c.back)}</span></div>`;
+  }
+  box.innerHTML = html || "<p class='empty'>Eşleşme yok.</p>";
+}
+function syncMode(){
+  const list = mode === "list";
+  if ($("card")) $("card").hidden = list;
+  if ($("grade")) $("grade").hidden = list;
+  const bar = document.querySelector(".bar");
+  if (bar) bar.hidden = list;
+  if ($("shuffle")) $("shuffle").hidden = list;
+  if ($("dir")) $("dir").hidden = list;
+  if ($("list-wrap")) $("list-wrap").hidden = !list;
+  if ($("mode")) {
+    $("mode").textContent = list ? "Kartlar" : "Liste";
+    $("mode").classList.toggle("on", list);
+  }
+  if (list) renderList();
+}
+if ($("mode")) $("mode").onclick = () => { mode = mode==="cards"?"list":"cards"; syncMode(); };
+if ($("search")) $("search").addEventListener("input", renderList);
 rebuild();
 </script>
 </body>
