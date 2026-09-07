@@ -43,6 +43,24 @@
   #vocab-list .tr { color:var(--mute); text-align:right; }
   #vocab-list .row.known { opacity:.42; }
   #vocab-list .empty { color:var(--mute); }
+  .card.sentence .word { font-size: clamp(1.15rem, 3.5vw, 1.75rem); line-height:1.4; }
+
+  .topbar { position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:.55rem; padding:.55rem 1rem; background:var(--paper); border-bottom:1px solid var(--line); }
+  .topbar .brand { color:var(--ink); text-decoration:none; font-weight:600; letter-spacing:.02em; }
+  .menu-btn { display:none; margin-left:auto; border:1px solid var(--line); background:var(--card); color:var(--ink); width:2.2rem; height:2.2rem; border-radius:.45rem; font:inherit; font-size:1.2rem; cursor:pointer; line-height:1; }
+  .topnav { display:flex; flex-wrap:wrap; gap:.4rem; margin-left:auto; align-items:center; }
+  .topnav a { border:1px solid var(--line); color:var(--ink); text-decoration:none; padding:.32rem .7rem; border-radius:999px; font-size:.85rem; }
+  .topnav a.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .topnav .toc-block { display:none; width:100%; }
+  .topnav .toc-block h2 { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); margin:.75rem 0 .4rem; font-weight:600; }
+  .topnav .toc-block a { display:block; border:0; border-radius:.35rem; padding:.22rem .4rem; }
+  @media (max-width: 860px) {
+    .menu-btn { display:inline-flex; align-items:center; justify-content:center; }
+    .topnav { display:none; position:absolute; left:0; right:0; top:100%; flex-direction:column; align-items:stretch; margin:0; padding:.55rem 1rem 1rem; background:var(--paper); border-bottom:1px solid var(--line); max-height:calc(100vh - 3.4rem); overflow:auto; }
+    .topnav.open { display:flex; }
+    .topnav .toc-block { display:block; }
+    .outline { display:none !important; }
+  }
 
   .wrap { max-width: 72rem; }
   .drill { max-width: 44rem; margin: 0 auto 2.6rem; }
@@ -50,12 +68,17 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="nav">
-    <a href="index.html">Kartlar</a>
+<header class="topbar">
+  <a class="brand" href="index.html">SUKISEN</a>
+  <button type="button" class="menu-btn" id="menu-btn" aria-label="Menü" aria-expanded="false">☰</button>
+  <nav class="topnav" id="topnav">
+    <a href="index.html">Kelimeler</a>
+    <a href="sentences.html">Cümleler</a>
     <a href="notes.html">Notlar</a>
     <a class="on" href="hiragana.html">Hiragana</a>
-  </div>
+  </nav>
+</header>
+<div class="wrap">
   <header>
     <div>
       <h1>Hiragana</h1>
@@ -147,6 +170,23 @@ document.addEventListener("keydown", e => {
   if(e.key==="ArrowLeft"||e.key==="1") $("again").click();
 });
 rebuild();
+
+(function(){
+  const btn = document.getElementById("menu-btn");
+  const nav = document.getElementById("topnav");
+  if (!btn || !nav) return;
+  btn.onclick = () => {
+    const open = nav.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  };
+  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+    if (window.matchMedia("(max-width: 860px)").matches) {
+      nav.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    }
+  }));
+})();
+
 </script>
 </body>
 </html>
