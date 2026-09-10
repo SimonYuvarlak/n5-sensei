@@ -1,5 +1,5 @@
 # SUKISEN
-SUKISEN Japanese flashcards (170 words, 56 sentences) and class notes.
+SUKISEN Japanese flashcards (186 words, 68 sentences) and class notes.
 
 - Kelimeler: https://web-production-fda86.up.railway.app
 - Cümleler: https://web-production-fda86.up.railway.app/sentences.html
